@@ -1,3 +1,6 @@
+import { ApolloProvider } from "@apollo/client";
+import { useApollo } from "../lib/apolloClient";
+
 import "../styles/globals.css";
 import Layout from "../components/layout/layout";
 
@@ -9,7 +12,8 @@ import { LayoutContext } from "../context/layout-context";
 import { useAuth } from "../utils/hooks/auth-hooks";
 import { useLayout } from "../utils/hooks/layout-hooks";
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, apollo }) {
+  const apolloClient = useApollo(pageProps);
   const { userId, token, login, logout } = useAuth();
   const {
     BGCOLOR_VARIANT_MAPS,
@@ -22,30 +26,32 @@ function MyApp({ Component, pageProps }) {
   } = useLayout();
 
   return (
-    <AuthContext.Provider
-      value={{
-        userId,
-        token,
-        login,
-        logout,
-      }}
-    >
-      <LayoutContext.Provider
+    <ApolloProvider client={apolloClient}>
+      <AuthContext.Provider
         value={{
-          BGCOLOR_VARIANT_MAPS,
-          COLOR_VARIANT_MAPS,
-          layoutColor,
-          changeLayoutColorHandler,
-          isNavOpen,
-          ToggleNavHandler,
-          SetToggleStateNavHandler,
+          userId,
+          token,
+          login,
+          logout,
         }}
       >
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </LayoutContext.Provider>
-    </AuthContext.Provider>
+        <LayoutContext.Provider
+          value={{
+            BGCOLOR_VARIANT_MAPS,
+            COLOR_VARIANT_MAPS,
+            layoutColor,
+            changeLayoutColorHandler,
+            isNavOpen,
+            ToggleNavHandler,
+            SetToggleStateNavHandler,
+          }}
+        >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </LayoutContext.Provider>
+      </AuthContext.Provider>
+    </ApolloProvider>
   );
 }
 

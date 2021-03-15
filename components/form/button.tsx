@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { classNames } from "../../util/utils";
+import { classNames } from "../../utils/utils";
 // import styled, { css } from "styled-components";
 // import tw from "twin.macro";
 

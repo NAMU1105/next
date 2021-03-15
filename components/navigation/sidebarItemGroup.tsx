@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
 import { LayoutContext } from "../../context/layout-context";
-import { classNames } from "../util/utils";
+import { classNames } from "../../utils/utils";
 
 const SidebarItem = (props) => {
   return (

@@ -1,7 +1,7 @@
 import React, { ReactNode } from "react";
 import styled, { css } from "styled-components";
 // import tw from "twin.macro";
-import { classNames } from "../util/utils";
+import { classNames } from "../../utils/utils";
 
 const AvatarGroupWrapper = styled.div.attrs({
   className: "flex",

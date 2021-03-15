@@ -5,24 +5,18 @@ export const TestSchema = Yup.object().shape({
   email: Yup.string().email("invalidEmail").required("required"),
 });
 export const LoginSchema = Yup.object().shape({
-  strEmail: Yup.string().email("invalidEmail").required("required"),
-  strPassword: Yup.string().required("required"),
+  email: Yup.string().email("invalidEmail").required("required"),
+  password: Yup.string().required("required"),
 });
 export const SignupSchema = Yup.object().shape({
-  strEmail: Yup.string().email("invalidEmail").required("required"),
-  strPassword: Yup.string()
+  email: Yup.string().email("invalidEmail").required("required"),
+  password: Yup.string()
     .min(10, "tooShort")
     .max(15, "tooLong")
     .required("required"),
-  strFirstName: Yup.string()
-    .min(2, "tooShort")
-    .max(50, "tooLong")
-    .required("required"),
-  strLastName: Yup.string()
-    .min(2, "tooShort")
-    .max(50, "tooLong")
-    .required("required"),
-  isAgreed: Yup.boolean().required("required").oneOf([true], "mustAgree"),
+  firstName: Yup.string().required("required"),
+  lastName: Yup.string().required("required"),
+  // isAgreed: Yup.boolean().required("required").oneOf([true], "mustAgree"),
 });
 export const ConfirmEmailSchema = Yup.object().shape({
   strConfirmEmailFirst: Yup.string().required(null),

@@ -1,5 +1,5 @@
 import React, { ReactNode, useState } from "react";
-import { classNames } from "../util/utils";
+import { classNames } from "../../utils/utils";
 // close button
 const CloseBtn = (props) => {
   return (

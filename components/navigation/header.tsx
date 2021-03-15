@@ -3,8 +3,8 @@ import Image from "next/image";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 
 import { LayoutContext } from "../../context/layout-context";
-import { classNames } from "../util/utils";
-import { InputField } from "../UI/form/input";
+import { classNames } from "../../utils/utils";
+import { Input } from "../form/input";
 import { Avatar } from "../UI/avatar";
 
 interface IF {}
@@ -190,7 +190,7 @@ const Header: React.FC<IF> = (props: IF) => {
           >
             {({ errors, touched }) => (
               <Form>
-                <InputField
+                <Input
                   type="text"
                   placeholder="Search..."
                   name="searchBar"

@@ -1,7 +1,7 @@
 import React from "react";
 import { useField } from "formik";
 // import styled from "styled-components";
-import { classNames } from "../../util/utils";
+import { classNames } from "../../utils/utils";
 
 // TODO: 반복되는 코드 줄이기
 // 1. maps 통일
@@ -126,7 +126,7 @@ interface InputTextProps extends InputProps {
 ////****************************** */
 // inputText
 ////****************************** */
-export const InputField: React.FC<InputTextProps> = (props) => {
+export const Input: React.FC<InputTextProps> = (props) => {
   const [field, { error, touched }] = useField({
     name: props.name,
   });
@@ -230,7 +230,7 @@ export const InputField: React.FC<InputTextProps> = (props) => {
   }
 };
 
-InputField.defaultProps = {
+Input.defaultProps = {
   ringcolor: "gray",
   rounded: "lg",
 };

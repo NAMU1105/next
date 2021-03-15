@@ -1,5 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { classNames } from "../util/utils";
+import { classNames } from "../../utils/utils";
 
 const BGCOLOR_VARIANT_MAPS = {
   info: "bg-blue-300 border-blue-300",

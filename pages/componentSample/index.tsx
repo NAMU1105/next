@@ -1,15 +1,10 @@
 import React from "react";
 import { Avatar, AvatarGroup } from "../../components/UI/avatar";
 import { Alert } from "../../components/UI/alert";
-import Button from "../../components/UI/form/button";
-import {
-  Checkbox,
-  InputField,
-  Select,
-  Radio,
-} from "../../components/UI/form/input";
+import Button from "../../components/form/button";
+import { Checkbox, Input, Select, Radio } from "../../components/form/input";
 import { Formik, Field, Form, FormikHelpers } from "formik";
-import { TestSchema } from "../../components/util/validator";
+import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
 
@@ -143,7 +138,7 @@ const Index = (props) => {
                   size="sm"
                 /> */}
                 <br />
-                <InputField
+                <Input
                   label="1"
                   name="email"
                   type="email"
@@ -154,7 +149,7 @@ const Index = (props) => {
                   // ringcolor="black"
                   // ringwidth="sm"
                 />
-                <InputField
+                <Input
                   label="1"
                   name="email"
                   type="email"
@@ -165,7 +160,7 @@ const Index = (props) => {
                   ringcolor="danger"
                   ringwidth="lg"
                 />
-                <InputField
+                <Input
                   label="1"
                   name="email"
                   type="text"
@@ -178,7 +173,7 @@ const Index = (props) => {
                   bgcolor="primary"
                   // className=""
                 />
-                <InputField
+                <Input
                   label="1"
                   name="email"
                   type="text"

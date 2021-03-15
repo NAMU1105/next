@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { LayoutContext } from "../../context/layout-context";
-import { classNames } from "../util/utils";
+import { classNames } from "../../utils/utils";
 import SidebarItemGroup from "./sidebarItemGroup";
 
 // const DUMMY_MENUS =[{}]
