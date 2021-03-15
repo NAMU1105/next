@@ -9,7 +9,7 @@ export default function Home() {
       </Head> */}
 
       {/* <main> */}
-      <h1>Hello world</h1>
+      <h1>Hello world!</h1>
       {/* </main> */}
       {/* <div id="backdrop-hook"></div>
       <div id="modal-hook"></div>
