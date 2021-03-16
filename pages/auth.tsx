@@ -1,7 +1,6 @@
-import React, { useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
-import { useRouter } from "next/router";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
@@ -10,74 +9,84 @@ import Button from "../components/form/button";
 
 interface IF {}
 
-const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
-  cache: new InMemoryCache(),
-});
+const LOG_IN = gql`
+  query logIn($email: String!, $password: String!) {
+    logIn(email: $email, password: $password) {
+      id
+      name
+    }
+  }
+`;
+
+const SIGN_UP = gql`
+  mutation signUp(
+    $id: String!
+    $name: String!
+    $email: String!
+    $password: String!
+  ) {
+    signUp(id: $id, name: $name, email: $email, password: $password) {
+      id
+      name
+      color
+    }
+  }
+`;
 
 const Auth: React.FC<IF> = (props: IF) => {
   const [isLoginMode, setLoginMode] = useState(true);
 
-  const signUp = async (userId = "test", name, email, password) => {
-    const logIn = `
-    query logIn(
-        $email: String!
-        $password: String!
-      ) {
-        logIn(
-          email: $email
-          password: $password
-        ) {
-          id
-          name
-        }
-      }`;
+  // const getUsers = () => {
+  //   const GET_USERS = gql`
+  //     query users {
+  //       users {
+  //         id
+  //         name
+  //       }
+  //     }
+  //   `;
+  //   const { loading, error, data } = useQuery(GET_USERS);
+  //   if (data) console.log(data);
+  //   console.log(loading);
+  // };
 
-    const type = isLoginMode ? logIn : signUp;
+  // getUsers();
+  // 회원가입
 
-    const { loading, error, data } = await client.query({
-      query: gql`
-        query signUp(
-          $userId: String!
-          $name: String!
-          $email: String!
-          $password: String!
-        ) {
-          signUp(id: $userId, name: $name, email: $email, password: $password) {
-            id
-            name
-            color
-          }
-        }
-      `,
-      variables: { userId, name, email, password },
-    });
-
-    console.log("loading:", loading);
-    console.log("error:", error);
-    console.log("data:", data);
-
-    return data;
+  const signUpCompleted = (data) => {
+    console.log(data);
   };
-  const logIn = async (email, password) => {
-    const { loading, error, data } = await client.query({
-      query: gql`
-        query logIn($email: String!, $password: String!) {
-          logIn(email: $email, password: $password) {
-            id
-            name
-          }
-        }
-      `,
-      variables: { email, password },
+  const [singUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
+  // const [singUp, { loading, error, data }] = useMutation(SIGN_UP);
+
+  const execSignUp = (email, firstName, password) => {
+    singUp({
+      variables: {
+        id: email,
+        name: firstName,
+        email: email,
+        password: password,
+      },
     });
-
-    console.log("loading:", loading);
-    console.log("error:", error);
-    console.log("data:", data);
-
-    return data;
   };
+
+  //로그인
+  // const [singUp, { loading, error, data }] = useMutation(LOG_IN);
+  // if (error) console.log(error);
+  // if (data) console.log(data);
+
+  // const logIn = (email, password) => {
+  //   const { loading, error, data } = useQuery(LOG_IN, {
+  //     variables: { email: email, password: password },
+  //   });
+  //   if (loading) console.log("loading:", loading);
+  //   // console.log("error:", error);
+  //   if (data) console.log("data:", data);
+  //   return data;
+  // };
+
+  // logIn(); // 이렇게 하면 잘 됨
+
   return (
     <>
       <h1>auth</h1>
@@ -96,14 +105,24 @@ const Auth: React.FC<IF> = (props: IF) => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
             // 간이 통신
-            isLoginMode
-              ? logIn(values.email, values.password)
-              : signUp(
-                  values.email,
-                  values.email,
-                  values.firstName,
-                  values.password
-                );
+            // singUp({
+            //   variables: {
+            //     id: values.email,
+            //     name: values.firstName,
+            //     email: values.email,
+            //     password: values.password,
+            //   },
+            // });
+            execSignUp(values.email, values.firstName, values.password);
+
+            // isLoginMode
+            //   ? logIn(values.email, values.password)
+            //   : signUp(
+            //       values.email,
+            //       values.email,
+            //       values.firstName,
+            //       values.password
+            //     );
           }, 300);
         }}
       >

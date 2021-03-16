@@ -31,30 +31,37 @@ const DUMMY_ALL_USERES = [
     password: "10",
   },
   { id: "5", name: "5Namu", color: "red", email: "1@1.com", password: "DUMMY" },
-  { id: "6", name: "6Namu", color: "red", email: "11@11.com", password: "11" },
+  {
+    id: "6",
+    name: "6Namu!!",
+    color: "red",
+    email: "11@11.com",
+    password: "11",
+  },
 ];
 
 const typeDefs = gql`
   scalar Date
-
-  type Query {
-    users: [User!]!
-    user(id: String!): User!
-    signUp(
-      id: String!
-      name: String!
-      email: String!
-      password: String!
-    ): [User!]!
-    logIn(email: String!, password: String!): User!
-  }
-
   type User {
     id: String
     name: String
     color: String
     email: String
     password: String
+  }
+  type Query {
+    users: [User!]!
+    user(id: String!): User!
+    logIn(email: String!, password: String!): User!
+  }
+
+  type Mutation {
+    signUp(
+      id: String!
+      name: String!
+      email: String!
+      password: String!
+    ): [User!]!
   }
 `;
 
@@ -65,27 +72,14 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     // 모든 유저정보 get
-    users(parent, args, context) {
-      // TODO: DB에서 값꺼내서 여기에 넣어서 보내주면 될 것 같다.
-      return DUMMY_ALL_USERES;
-    },
+    // users(parent, args, context) {
+    //   return DUMMY_ALL_USERES;
+    // },
+    users: () => DUMMY_ALL_USERES,
     // 해당id 유저 정보 get
     user(parent, args, context) {
       const result = DUMMY_ALL_USERES.find((u) => u.id === args.id);
       return result;
-    },
-    // 회원가입
-    signUp(parent, args, context) {
-      const newUser = {
-        id: args.id,
-        name: args.name,
-        email: args.email,
-        password: args.password,
-        color: "pink",
-      };
-
-      DUMMY_ALL_USERES.push(newUser);
-      return DUMMY_ALL_USERES;
     },
     // 로그인
     logIn(parent, args, context) {
@@ -96,6 +90,24 @@ const resolvers = {
       } else {
         return result;
       }
+    },
+  },
+  Mutation: {
+    // 회원가입
+    signUp(parent, args, context) {
+      console.log(args);
+
+      const newUser = {
+        id: args.id,
+        name: args.name,
+        email: args.email,
+        password: args.password,
+        color: "pink",
+      };
+
+      DUMMY_ALL_USERES.push(newUser);
+      return DUMMY_ALL_USERES;
+      // return newUser;
     },
   },
   // Date: new Date(),

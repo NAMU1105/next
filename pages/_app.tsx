@@ -1,5 +1,5 @@
 import { ApolloProvider } from "@apollo/client";
-import { useApollo } from "../lib/apolloClient";
+import { ApolloClient, InMemoryCache } from "@apollo/client";
 
 import "../styles/globals.css";
 import Layout from "../components/layout/layout";
@@ -13,7 +13,12 @@ import { useAuth } from "../utils/hooks/auth-hooks";
 import { useLayout } from "../utils/hooks/layout-hooks";
 
 function MyApp({ Component, pageProps, apollo }) {
-  const apolloClient = useApollo(pageProps);
+  // const apolloClient = useApollo(pageProps);
+  const apolloClient = new ApolloClient({
+    uri: "http://localhost:3000/api/graphql",
+    cache: new InMemoryCache(),
+  });
+
   const { userId, token, login, logout } = useAuth();
   const {
     BGCOLOR_VARIANT_MAPS,
