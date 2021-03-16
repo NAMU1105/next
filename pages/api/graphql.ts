@@ -52,7 +52,6 @@ const typeDefs = gql`
   type Query {
     users: [User!]!
     user(id: String!): User!
-    logIn(email: String!, password: String!): User!
   }
 
   type Mutation {
@@ -62,6 +61,7 @@ const typeDefs = gql`
       email: String!
       password: String!
     ): [User!]!
+    logIn(email: String!, password: String!): User!
   }
 `;
 
@@ -81,16 +81,6 @@ const resolvers = {
       const result = DUMMY_ALL_USERES.find((u) => u.id === args.id);
       return result;
     },
-    // 로그인
-    logIn(parent, args, context) {
-      const result = DUMMY_ALL_USERES.find((u) => u.email == args.email);
-      if (!result) return new Error("no such user");
-      if (result.password !== args.password) {
-        return new Error("invalid auth");
-      } else {
-        return result;
-      }
-    },
   },
   Mutation: {
     // 회원가입
@@ -108,6 +98,16 @@ const resolvers = {
       DUMMY_ALL_USERES.push(newUser);
       return DUMMY_ALL_USERES;
       // return newUser;
+    },
+    // 로그인
+    logIn(parent, args, context) {
+      const result = DUMMY_ALL_USERES.find((u) => u.email == args.email);
+      if (!result) return new Error("no such user");
+      if (result.password !== args.password) {
+        return new Error("invalid auth");
+      } else {
+        return result;
+      }
     },
   },
   // Date: new Date(),

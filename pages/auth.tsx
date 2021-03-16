@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
 
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
@@ -10,7 +10,7 @@ import Button from "../components/form/button";
 interface IF {}
 
 const LOG_IN = gql`
-  query logIn($email: String!, $password: String!) {
+  mutation logIn($email: String!, $password: String!) {
     logIn(email: $email, password: $password) {
       id
       name
@@ -35,6 +35,7 @@ const SIGN_UP = gql`
 
 const Auth: React.FC<IF> = (props: IF) => {
   const [isLoginMode, setLoginMode] = useState(true);
+  // const [login, loginResult] = useMutation(LOG_IN);
 
   // const getUsers = () => {
   //   const GET_USERS = gql`
@@ -52,13 +53,10 @@ const Auth: React.FC<IF> = (props: IF) => {
 
   // getUsers();
   // 회원가입
-
   const signUpCompleted = (data) => {
     console.log(data);
   };
   const [singUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
-  // const [singUp, { loading, error, data }] = useMutation(SIGN_UP);
-
   const execSignUp = (email, firstName, password) => {
     singUp({
       variables: {
@@ -70,22 +68,19 @@ const Auth: React.FC<IF> = (props: IF) => {
     });
   };
 
-  //로그인
-  // const [singUp, { loading, error, data }] = useMutation(LOG_IN);
-  // if (error) console.log(error);
-  // if (data) console.log(data);
-
-  // const logIn = (email, password) => {
-  //   const { loading, error, data } = useQuery(LOG_IN, {
-  //     variables: { email: email, password: password },
-  //   });
-  //   if (loading) console.log("loading:", loading);
-  //   // console.log("error:", error);
-  //   if (data) console.log("data:", data);
-  //   return data;
-  // };
-
-  // logIn(); // 이렇게 하면 잘 됨
+  // 로그인
+  const logInCompleted = (data) => {
+    console.log(data);
+  };
+  const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
+  const execLogIn = (email, password) => {
+    logIn({
+      variables: {
+        email: email,
+        password: password,
+      },
+    });
+  };
 
   return (
     <>
@@ -113,7 +108,10 @@ const Auth: React.FC<IF> = (props: IF) => {
             //     password: values.password,
             //   },
             // });
-            execSignUp(values.email, values.firstName, values.password);
+
+            isLoginMode
+              ? execLogIn(values.email, values.password)
+              : execSignUp(values.email, values.firstName, values.password);
 
             // isLoginMode
             //   ? logIn(values.email, values.password)
