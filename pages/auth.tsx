@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { gql, useMutation } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
 
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
@@ -10,7 +11,7 @@ import Button from "../components/form/button";
 interface IF {}
 
 const LOG_IN = gql`
-  mutation logIn($input: LogInInput) {
+  mutation logIn($input: LogInInput!) {
     logIn(input: $input) {
       id
       firstName
@@ -19,21 +20,31 @@ const LOG_IN = gql`
 `;
 
 const SIGN_UP = gql`
-  mutation signUp($input: SignUpInput) {
+  mutation signUp($input: SignUpInput!) {
     signUp(input: $input) {
       id
-      firstName
     }
   }
 `;
 
+// Log any GraphQL errors or network error that occurred
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const Auth: React.FC<IF> = (props: IF) => {
   const [isLoginMode, setLoginMode] = useState(false);
   const [inputs, setInputs] = useState({
-    email: "sdf",
-    password: "sdf",
-    firstName: "sdf",
-    lastName: "sdf",
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
   });
   // const [loginInputs, setLoginInputs] = useState({
   //   email: "",
@@ -46,30 +57,29 @@ const Auth: React.FC<IF> = (props: IF) => {
     console.log(data);
   };
   const [signUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
+
   const execSignUp = () => {
     console.log(inputs);
-
+    // debugger;
     signUp({
-      variables: {
-        input: inputs,
-      },
+      variables: { input: inputs },
     });
   };
 
   // 로그인
-  const logInCompleted = (data) => {
-    console.log(data);
-  };
-  const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
+  // const logInCompleted = (data) => {
+  //   console.log(data);
+  // };
+  // const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
 
-  const execLogIn = () => {
-    // console.log(loginInputs);
-    // logIn({
-    //   variables: {
-    //     input: loginInputs,
-    //   },
-    // });
-  };
+  // const execLogIn = () => {
+  //   console.log(loginInputs);
+  //   logIn({
+  //     variables: {
+  //       input: loginInputs,
+  //     },
+  //   });
+  // };
 
   return (
     <>
@@ -109,7 +119,9 @@ const Auth: React.FC<IF> = (props: IF) => {
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
-            isLoginMode ? execLogIn() : execSignUp();
+            // isLoginMode ? execLogIn() : execSignUp();
+
+            execSignUp();
           }, 300);
         }}
       >
