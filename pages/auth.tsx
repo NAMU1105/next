@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
-import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
@@ -36,20 +36,6 @@ const SIGN_UP = gql`
 const Auth: React.FC<IF> = (props: IF) => {
   const [isLoginMode, setLoginMode] = useState(true);
   // const [login, loginResult] = useMutation(LOG_IN);
-
-  // const getUsers = () => {
-  //   const GET_USERS = gql`
-  //     query users {
-  //       users {
-  //         id
-  //         name
-  //       }
-  //     }
-  //   `;
-  //   const { loading, error, data } = useQuery(GET_USERS);
-  //   if (data) console.log(data);
-  //   console.log(loading);
-  // };
 
   // getUsers();
   // 회원가입

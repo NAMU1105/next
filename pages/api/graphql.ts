@@ -51,7 +51,7 @@ const typeDefs = gql`
   }
   type Query {
     users: [User!]!
-    user(id: String!): User!
+    getUserByID(id: String!): User!
   }
 
   type Mutation {
@@ -77,7 +77,7 @@ const resolvers = {
     // },
     users: () => DUMMY_ALL_USERES,
     // 해당id 유저 정보 get
-    user(parent, args, context) {
+    getUserByID(parent, args, context) {
       const result = DUMMY_ALL_USERES.find((u) => u.id === args.id);
       return result;
     },

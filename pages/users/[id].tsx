@@ -1,64 +1,57 @@
-import { useRouter } from "next/router";
-import { ApolloClient, InMemoryCache, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { initializeApollo } from "../../lib/apolloClient";
 
-const client = new ApolloClient({
-  uri: "http://localhost:3000/api/graphql",
-  cache: new InMemoryCache(),
-});
+const GET_USER = gql`
+  query userByID($id: String!) {
+    userByID(id: $id) {
+      firstName
+      lastName
+      email
+    }
+  }
+`;
 
 const UserDetail = ({ loadedUser }) => {
-  const router = useRouter();
+  // const router = useRouter();
   //   console.log(router);
-
   //   console.log(router.pathname);
   //   console.log(router.query);
   //   console.log(router.query.id);
-  console.log(loadedUser);
 
-  return <>User Detail,{loadedUser.name}</>;
+  return <>User name: {loadedUser.userByID.firstName}</>;
 };
-
-async function getData(userId) {
-  const { loading, error, data } = await client.query({
-    query: gql`
-      query user($userId: String!) {
-        user(id: $userId) {
-          id
-          name
-          color
-        }
-      }
-    `,
-    variables: { userId },
-  });
-  console.log("loading:", loading);
-  console.log("error:", error);
-  console.log("data:", data);
-
-  return data;
-}
 
 export const getStaticProps = async (context) => {
   const { params } = context;
-  const userId = params.id;
+  const id = params.id;
+  const apolloClient = initializeApollo();
 
-  //   TODO: 나중에 진짜 백엔드 데이터 요청 코드로 바꾸기
-  if (!userId) {
+  if (!id) {
     return;
   }
 
-  const data = await getData(userId);
+  try {
+    const { data, error } = await apolloClient.query({
+      query: GET_USER,
+      variables: {
+        id,
+      },
+    });
 
-  //   invalid한 url일 경우 404페이지 띄움
-  if (!data.user) {
-    return { notFound: true };
+    //   invalid한 url일 경우 404페이지 띄움
+    if (!data) {
+      return { notFound: true };
+    }
+
+    return {
+      props: {
+        loadedUser: data,
+      },
+      revalidate: 1,
+    };
+  } catch (error) {
+    console.log(error);
   }
-
-  return {
-    props: {
-      loadedUser: data.user,
-    },
-  };
 };
 
 // This function gets called at build time
