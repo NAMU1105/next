@@ -23,6 +23,7 @@ const SIGN_UP = gql`
   mutation signUp($input: SignUpInput!) {
     signUp(input: $input) {
       id
+      firstName
     }
   }
 `;
@@ -40,12 +41,12 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const Auth: React.FC<IF> = (props: IF) => {
   const [isLoginMode, setLoginMode] = useState(false);
-  const [inputs, setInputs] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-  });
+  // const [inputs, setInputs] = useState({
+  //   email: "",
+  //   password: "",
+  //   firstName: "",
+  //   lastName: "",
+  // });
   // const [loginInputs, setLoginInputs] = useState({
   //   email: "",
   //   password: "",
@@ -58,7 +59,7 @@ const Auth: React.FC<IF> = (props: IF) => {
   };
   const [signUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
 
-  const execSignUp = () => {
+  const execSignUp = (inputs) => {
     console.log(inputs);
     // debugger;
     signUp({
@@ -67,19 +68,19 @@ const Auth: React.FC<IF> = (props: IF) => {
   };
 
   // 로그인
-  // const logInCompleted = (data) => {
-  //   console.log(data);
-  // };
-  // const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
+  const logInCompleted = (data) => {
+    console.log(data);
+  };
+  const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
 
-  // const execLogIn = () => {
-  //   console.log(loginInputs);
-  //   logIn({
-  //     variables: {
-  //       input: loginInputs,
-  //     },
-  //   });
-  // };
+  const execLogIn = (loginInputs) => {
+    console.log(loginInputs);
+    logIn({
+      variables: {
+        input: loginInputs,
+      },
+    });
+  };
 
   return (
     <>
@@ -96,32 +97,35 @@ const Auth: React.FC<IF> = (props: IF) => {
         validationSchema={isLoginMode ? LoginSchema : SignupSchema}
         onSubmit={(values, { setSubmitting }) => {
           // console.log(values);
-
+          let loginInputs;
+          let inputs;
           // set Input values
-          // if (isLoginMode) {
-          //   setLoginInputs({ email: values.email, password: values.password });
-          // } else {
-          setInputs({
-            email: values.email,
-            password: values.password,
-            firstName: values.firstName,
-            lastName: values.lastName,
-          });
+          if (isLoginMode) {
+            // setLoginInputs({ email: values.email, password: values.password });
+            loginInputs = {
+              email: values.email,
+              password: values.password,
+            };
+          } else {
+            // setInputs({
+            //   email: values.email,
+            //   password: values.password,
+            //   firstName: values.firstName,
+            //   lastName: values.lastName,
+            // });
 
-          // const inputs = {
-          //   email: values.email,
-          //   password: values.password,
-          //   firstName: values.firstName,
-          //   lastName: values.lastName,
-          // };
-          // }
+            inputs = {
+              email: values.email,
+              password: values.password,
+              firstName: values.firstName,
+              lastName: values.lastName,
+            };
+          }
 
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
-            // isLoginMode ? execLogIn() : execSignUp();
-
-            execSignUp();
+            isLoginMode ? execLogIn(loginInputs) : execSignUp(inputs);
           }, 300);
         }}
       >
