@@ -19,7 +19,11 @@ const UserDetail = ({ loadedUser }) => {
   //   console.log(router.query.id);
   if (!loadedUser) return <>No data</>;
 
-  return <>User name: {loadedUser.userByID.firstName}</>;
+  if (loadedUser.userByID) {
+    return <>User name: {loadedUser.userByID.firstName}</>;
+  } else {
+    return <div>User name:</div>;
+  }
 };
 
 export const getStaticProps = async (context) => {
