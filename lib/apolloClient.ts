@@ -7,8 +7,10 @@ function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
     link: new HttpLink({
-      uri: "http://localhost:4000/", // Add your Slash endpoint here
-      // uri: "http://localhost:3000/api/graphql", // Add your Slash endpoint here
+      uri: "http://localhost:4000/",
+      // Add your Slash endpoint here
+      // http://3.34.126.188/graphql_api
+      // uri: "http://localhost:3000/api/graphql",
     }),
     cache: new InMemoryCache(),
   });

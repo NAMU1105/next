@@ -17,6 +17,7 @@ const UserDetail = ({ loadedUser }) => {
   //   console.log(router.pathname);
   //   console.log(router.query);
   //   console.log(router.query.id);
+  if (!loadedUser) return <>No data</>;
 
   return <>User name: {loadedUser.userByID.firstName}</>;
 };

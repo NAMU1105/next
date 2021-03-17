@@ -10,46 +10,48 @@ import Button from "../components/form/button";
 interface IF {}
 
 const LOG_IN = gql`
-  mutation logIn($email: String!, $password: String!) {
-    logIn(email: $email, password: $password) {
+  mutation logIn($input: LogInInput) {
+    logIn(input: $input) {
       id
-      name
+      firstName
     }
   }
 `;
 
 const SIGN_UP = gql`
-  mutation signUp(
-    $id: String!
-    $name: String!
-    $email: String!
-    $password: String!
-  ) {
-    signUp(id: $id, name: $name, email: $email, password: $password) {
+  mutation signUp($input: SignUpInput) {
+    signUp(input: $input) {
       id
-      name
-      color
+      firstName
     }
   }
 `;
 
 const Auth: React.FC<IF> = (props: IF) => {
-  const [isLoginMode, setLoginMode] = useState(true);
+  const [isLoginMode, setLoginMode] = useState(false);
+  const [inputs, setInputs] = useState({
+    email: "sdf",
+    password: "sdf",
+    firstName: "sdf",
+    lastName: "sdf",
+  });
+  // const [loginInputs, setLoginInputs] = useState({
+  //   email: "",
+  //   password: "",
+  // });
   // const [login, loginResult] = useMutation(LOG_IN);
 
-  // getUsers();
   // 회원가입
   const signUpCompleted = (data) => {
     console.log(data);
   };
-  const [singUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
-  const execSignUp = (email, firstName, password) => {
-    singUp({
+  const [signUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
+  const execSignUp = () => {
+    console.log(inputs);
+
+    signUp({
       variables: {
-        id: email,
-        name: firstName,
-        email: email,
-        password: password,
+        input: inputs,
       },
     });
   };
@@ -59,13 +61,14 @@ const Auth: React.FC<IF> = (props: IF) => {
     console.log(data);
   };
   const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
-  const execLogIn = (email, password) => {
-    logIn({
-      variables: {
-        email: email,
-        password: password,
-      },
-    });
+
+  const execLogIn = () => {
+    // console.log(loginInputs);
+    // logIn({
+    //   variables: {
+    //     input: loginInputs,
+    //   },
+    // });
   };
 
   return (
@@ -82,31 +85,31 @@ const Auth: React.FC<IF> = (props: IF) => {
         }}
         validationSchema={isLoginMode ? LoginSchema : SignupSchema}
         onSubmit={(values, { setSubmitting }) => {
+          // console.log(values);
+
+          // set Input values
+          // if (isLoginMode) {
+          //   setLoginInputs({ email: values.email, password: values.password });
+          // } else {
+          setInputs({
+            email: values.email,
+            password: values.password,
+            firstName: values.firstName,
+            lastName: values.lastName,
+          });
+
+          // const inputs = {
+          //   email: values.email,
+          //   password: values.password,
+          //   firstName: values.firstName,
+          //   lastName: values.lastName,
+          // };
+          // }
+
           setTimeout(() => {
             alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
-            // 간이 통신
-            // singUp({
-            //   variables: {
-            //     id: values.email,
-            //     name: values.firstName,
-            //     email: values.email,
-            //     password: values.password,
-            //   },
-            // });
-
-            isLoginMode
-              ? execLogIn(values.email, values.password)
-              : execSignUp(values.email, values.firstName, values.password);
-
-            // isLoginMode
-            //   ? logIn(values.email, values.password)
-            //   : signUp(
-            //       values.email,
-            //       values.email,
-            //       values.firstName,
-            //       values.password
-            //     );
+            isLoginMode ? execLogIn() : execSignUp();
           }, 300);
         }}
       >
