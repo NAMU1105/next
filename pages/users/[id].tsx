@@ -35,28 +35,24 @@ export const getStaticProps = async (context) => {
     return;
   }
 
-  try {
-    const { data, error } = await apolloClient.query({
-      query: GET_USER,
-      variables: {
-        id,
-      },
-    });
+  const { data, error } = await apolloClient.query({
+    query: GET_USER,
+    variables: {
+      id,
+    },
+  });
 
-    //   invalid한 url일 경우 404페이지 띄움
-    if (!data) {
-      return { notFound: true };
-    }
-
-    return {
-      props: {
-        loadedUser: data,
-      },
-      revalidate: 1,
-    };
-  } catch (error) {
-    console.log(error);
+  //   invalid한 url일 경우 404페이지 띄움
+  if (!data) {
+    return { notFound: true };
   }
+
+  return {
+    props: {
+      loadedUser: data,
+    },
+    revalidate: 1,
+  };
 };
 
 // This function gets called at build time
