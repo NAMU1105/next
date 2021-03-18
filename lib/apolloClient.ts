@@ -1,17 +1,33 @@
 import { useMemo } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { onError } from "@apollo/client/link/error";
+// import { createHttpLink } from "apollo-link-http"
 
 let apolloClient;
+
+const requestLink = new HttpLink({ uri: "http://localhost:4000/" });
+// Log any GraphQL errors or network error that occurred
+export const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.map(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+const link = errorLink.concat(requestLink);
 
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    link: new HttpLink({
-      uri: "http://localhost:4000/",
-      // Add your Slash endpoint here
-      // http://3.34.126.188/graphql_api
-      // uri: "http://localhost:3000/api/graphql",
-    }),
+    // link: new HttpLink({
+    //   uri: "http://localhost:4000/",
+    //   // http://3.34.126.188/graphql_api
+    //   // uri: "http://localhost:3000/api/graphql",
+    // }),
+    link: link,
     cache: new InMemoryCache(),
   });
 }
