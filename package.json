@@ -39,7 +39,9 @@
   },
   "devDependencies": {
     "@tailwindcss/custom-forms": "^0.2.1",
+    "@types/next-auth": "^3.7.2",
     "babel-plugin-macros": "^3.0.1",
+    "next-auth": "^3.13.1",
     "postcss-cli": "^8.3.1",
     "twin.macro": "^2.3.0"
   }

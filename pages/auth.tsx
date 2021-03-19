@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { gql, useMutation } from "@apollo/client";
-import { onError } from "@apollo/client/link/error";
+// import { getSession } from "next-auth/client";
 
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
@@ -28,30 +28,14 @@ const SIGN_UP = gql`
   }
 `;
 
-// Log any GraphQL errors or network error that occurred
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.map(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-      )
-    );
-  if (networkError) console.log(`[Network error]: ${networkError}`);
-});
-
 const Auth: React.FC<IF> = (props: IF) => {
-  const [isLoginMode, setLoginMode] = useState(false);
-  // const [inputs, setInputs] = useState({
-  //   email: "",
-  //   password: "",
-  //   firstName: "",
-  //   lastName: "",
-  // });
-  // const [loginInputs, setLoginInputs] = useState({
-  //   email: "",
-  //   password: "",
-  // });
-  // const [login, loginResult] = useMutation(LOG_IN);
+  const [isLoginMode, setLoginMode] = useState<boolean>(true);
+  // const [isLoading, setIsLoading] = useState<boolean>(true);
+  // const router = useRouter();
+
+  const toggleLoginMode = () => {
+    setLoginMode((prev) => !prev);
+  };
 
   // 회원가입
   const signUpCompleted = (data) => {
@@ -69,18 +53,41 @@ const Auth: React.FC<IF> = (props: IF) => {
 
   // 로그인
   const logInCompleted = (data) => {
-    console.log(data);
+    if (data) {
+      alert("loged in");
+    } else {
+      alert("login failed");
+    }
   };
   const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
 
   const execLogIn = (loginInputs) => {
+    debugger;
     console.log(loginInputs);
-    logIn({
-      variables: {
-        input: loginInputs,
-      },
-    });
+    try {
+      logIn({
+        variables: {
+          input: loginInputs,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  // useEffect(() => {
+  //   getSession().then((session) => {
+  //     if (session) {
+  //       router.replace("/");
+  //     } else {
+  //       setIsLoading(false);
+  //     }
+  //   });
+  // }, [router]);
+
+  // if (isLoading) {
+  //   return <p>Loading...</p>;
+  // }
 
   return (
     <>
@@ -123,7 +130,7 @@ const Auth: React.FC<IF> = (props: IF) => {
           }
 
           setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
+            // alert(JSON.stringify(values, null, 2));
             setSubmitting(false);
             isLoginMode ? execLogIn(loginInputs) : execSignUp(inputs);
           }, 300);
@@ -131,19 +138,22 @@ const Auth: React.FC<IF> = (props: IF) => {
       >
         {({ errors, touched, handleSubmit, isSubmitting }) => (
           <Form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              name="firstName"
-              label="firstName"
-              placeholder="firstName"
-            />
-            <Input
-              type="text"
-              name="lastName"
-              label="lastName"
-              placeholder="lastName"
-            />
-
+            {!isLoginMode && (
+              <>
+                <Input
+                  type="text"
+                  name="firstName"
+                  label="firstName"
+                  placeholder="firstName"
+                />
+                <Input
+                  type="text"
+                  name="lastName"
+                  label="lastName"
+                  placeholder="lastName"
+                />
+              </>
+            )}
             <Input
               type="email"
               name="email"
@@ -163,6 +173,14 @@ const Auth: React.FC<IF> = (props: IF) => {
           </Form>
         )}
       </Formik>
+      <Button
+        type="button"
+        onClick={toggleLoginMode}
+        size="sm"
+        bgColor="secondary"
+      >
+        Change mode
+      </Button>
     </>
   );
 };

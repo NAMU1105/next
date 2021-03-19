@@ -5,7 +5,7 @@ import { onError } from "@apollo/client/link/error";
 
 let apolloClient;
 
-const requestLink = new HttpLink({ uri: "http://localhost:4000/" });
+const requestLink = new HttpLink({ uri: "http://49.247.208.236:4000/" });
 // Log any GraphQL errors or network error that occurred
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
