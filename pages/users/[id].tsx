@@ -1,6 +1,7 @@
 import { gql } from "@apollo/client";
 import { initializeApollo } from "../../lib/apolloClient";
 
+// TODO: 로딩 넣기,
 const GET_USER = gql`
   query userByID($id: String!) {
     userByID(id: $id) {
