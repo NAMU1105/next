@@ -15,6 +15,10 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
   return (
     <>
       <Head>
+        <meta
+          http-equiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
         <title>4D REPLAY</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
