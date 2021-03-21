@@ -40,6 +40,11 @@ const Auth: React.FC<IF> = (props: IF) => {
   // 회원가입
   const signUpCompleted = (data) => {
     console.log(data);
+    if (data) {
+      alert("signed up");
+    } else {
+      alert("sign up failed");
+    }
   };
   const [signUp] = useMutation(SIGN_UP, { onCompleted: signUpCompleted });
 
@@ -62,7 +67,7 @@ const Auth: React.FC<IF> = (props: IF) => {
   const [logIn] = useMutation(LOG_IN, { onCompleted: logInCompleted });
 
   const execLogIn = (loginInputs) => {
-    debugger;
+    // debugger;
     console.log(loginInputs);
     try {
       logIn({
