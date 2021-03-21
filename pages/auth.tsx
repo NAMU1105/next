@@ -42,6 +42,7 @@ const Auth: React.FC<IF> = (props: IF) => {
     console.log(data);
     if (data) {
       alert("signed up");
+      console.log("signed up");
     } else {
       alert("sign up failed");
     }
@@ -59,7 +60,8 @@ const Auth: React.FC<IF> = (props: IF) => {
   // 로그인
   const logInCompleted = (data) => {
     if (data) {
-      alert("loged in");
+      alert("logged in");
+      console.log("logged in");
     } else {
       alert("login failed");
     }
