@@ -4,24 +4,24 @@ import Link from "next/link";
 export default function Index() {
   const [users, setUsers] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch("http://localhost:3000/api/graphql", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-        },
-        body: JSON.stringify({ query: "{ users { id name color } }" }),
-      });
-      const { data } = await response.json();
-      console.log(data);
-      setUsers(data.users);
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch("http://localhost:3000/api/graphql", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-type": "application/json",
+  //       },
+  //       body: JSON.stringify({ query: "{ users { id  } }" }),
+  //     });
+  //     const { data } = await response.json();
+  //     console.log(data);
+  //     setUsers(data.users);
+  //   })();
+  // }, []);
 
   return (
     <div className="users-page">
-      <ul>
+      {/* <ul>
         {users.map((user) => {
           const { id, name, color } = user;
           return (
@@ -30,7 +30,7 @@ export default function Index() {
             </Link>
           );
         })}
-      </ul>
+      </ul> */}
     </div>
   );
 }
