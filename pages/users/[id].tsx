@@ -64,7 +64,7 @@ export async function getStaticPaths() {
     // ],
     // 만들어지지 않은 것도 추후 요청이 들어오면 만들어 줄지 여부.
     // fallback: "blocking",
-    fallback: false,
+    fallback: true,
   };
 }
 
