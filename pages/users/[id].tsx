@@ -42,7 +42,7 @@ const UserDetail = ({ loadedUser }) => {
 
 // This function gets called at build time
 export async function getStaticPaths() {
-  // console.log("getStaticPaths!!");
+  console.log("getStaticPaths!!");
 
   const apolloClient = initializeApollo();
 
