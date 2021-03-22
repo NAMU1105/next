@@ -36,7 +36,9 @@ const UserDetail = ({ loadedUser }) => {
   if (loadedUser.userByID) {
     return <p>User name: {loadedUser.userByID.firstName}</p>;
   } else {
-    return <p>User name:</p>;
+    // console.log(loadedUser);
+
+    return <p>No such data</p>;
   }
 };
 
@@ -55,13 +57,8 @@ export async function getStaticPaths() {
   const pathsWithParams = ids.map((id) => ({ params: { id } }));
 
   return {
-    //빌드 타임 때 아래 정의한  /dyna/1,  /dyna/2, ... /dyna/동적인값 경로만 pre렌더링.
     paths: pathsWithParams,
-    // [
-    //   { params: { id: "0" } },
-    //   { params: { id: "1" } },
-    //   { params: { id: "2" } },
-    // ],
+
     // 만들어지지 않은 것도 추후 요청이 들어오면 만들어 줄지 여부.
     // fallback: "blocking",
     fallback: true,
@@ -78,6 +75,8 @@ export const getStaticProps = async (context) => {
   if (!id) {
     return;
   }
+  console.log("id: ", id);
+  console.log("params: ", params);
 
   const { data, error } = await apolloClient.query({
     query: GET_USER,
@@ -90,6 +89,8 @@ export const getStaticProps = async (context) => {
   if (!data) {
     return { notFound: true };
   }
+
+  console.log("data: ", data);
 
   return {
     props: {
