@@ -69,7 +69,7 @@ export async function getStaticPaths() {
 }
 
 export const getStaticProps = async (context) => {
-  console.log("re-generating!!");
+  console.log("getStaticProps");
 
   const { params } = context;
   const id = params.id;
