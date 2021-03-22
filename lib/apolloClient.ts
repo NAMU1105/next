@@ -1,11 +1,15 @@
 import { useMemo } from "react";
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+
 import { onError } from "@apollo/client/link/error";
 // import { createHttpLink } from "apollo-link-http"
 
 let apolloClient;
 
-const requestLink = new HttpLink({ uri: "http://49.247.208.236:4000/" });
+const requestLink = new HttpLink({
+  uri: process.env.REACT_APP_GRAPHQL_END_POINT,
+});
+// const requestLink = new HttpLink({ uri: "http://3.34.126.188/graphql_api" });
 // Log any GraphQL errors or network error that occurred
 export const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors)
@@ -22,11 +26,6 @@ const link = errorLink.concat(requestLink);
 function createApolloClient() {
   return new ApolloClient({
     ssrMode: typeof window === "undefined",
-    // link: new HttpLink({
-    //   uri: "http://localhost:4000/",
-    //   // http://3.34.126.188/graphql_api
-    //   // uri: "http://localhost:3000/api/graphql",
-    // }),
     link: link,
     cache: new InMemoryCache(),
   });

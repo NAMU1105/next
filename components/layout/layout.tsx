@@ -16,7 +16,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
     <>
       <Head>
         <meta
-          http-equiv="Content-Security-Policy"
+          httpEquiv="Content-Security-Policy"
           content="upgrade-insecure-requests"
         />
         <title>4D REPLAY</title>

@@ -1,8 +1,13 @@
 import { gql } from "@apollo/client";
 import { initializeApollo } from "../../lib/apolloClient";
 
-// TODO: 빌드에러 해결하기
-
+// const GET_USERS_ID = gql`
+//   query userAll {
+//     userAll {
+//       id
+//     }
+//   }
+// `;
 const GET_USERS_ID = gql`
   query users {
     users {
@@ -29,13 +34,43 @@ const UserDetail = ({ loadedUser }) => {
   if (!loadedUser) return <p>Loading...</p>;
 
   if (loadedUser.userByID) {
-    return <>User name: {loadedUser.userByID.firstName}</>;
+    return <p>User name: {loadedUser.userByID.firstName}</p>;
   } else {
-    return <div>User name:</div>;
+    return <p>User name:</p>;
   }
 };
 
+// This function gets called at build time
+export async function getStaticPaths() {
+  // console.log("getStaticPaths!!");
+
+  const apolloClient = initializeApollo();
+
+  const { data, error } = await apolloClient.query({
+    query: GET_USERS_ID,
+  });
+
+  // console.log(data);
+  const ids = data.users.map((u) => u.id);
+  const pathsWithParams = ids.map((id) => ({ params: { id } }));
+
+  return {
+    //빌드 타임 때 아래 정의한  /dyna/1,  /dyna/2, ... /dyna/동적인값 경로만 pre렌더링.
+    paths: pathsWithParams,
+    // [
+    //   { params: { id: "0" } },
+    //   { params: { id: "1" } },
+    //   { params: { id: "2" } },
+    // ],
+    // 만들어지지 않은 것도 추후 요청이 들어오면 만들어 줄지 여부.
+    // fallback: "blocking",
+    fallback: false,
+  };
+}
+
 export const getStaticProps = async (context) => {
+  console.log("re-generating!!");
+
   const { params } = context;
   const id = params.id;
   const apolloClient = initializeApollo();
@@ -60,34 +95,8 @@ export const getStaticProps = async (context) => {
     props: {
       loadedUser: data,
     },
-    revalidate: 100,
+    revalidate: 1, // 단위: 초
   };
 };
-
-// This function gets called at build time
-export async function getStaticPaths() {
-  const apolloClient = initializeApollo();
-
-  const { data, error } = await apolloClient.query({
-    query: GET_USERS_ID,
-  });
-
-  console.log(data);
-  const ids = data.users.map((u) => u.id);
-  const pathsWithParams = ids.map((id) => ({ params: { id } }));
-
-  return {
-    //빌드 타임 때 아래 정의한  /dyna/1,  /dyna/2, ... /dyna/동적인값 경로만 pre렌더링.
-    paths: pathsWithParams,
-    // [
-    //   { params: { id: "0" } },
-    //   { params: { id: "1" } },
-    //   { params: { id: "2" } },
-    // ],
-    // 만들어지지 않은 것도 추후 요청이 들어오면 만들어 줄지 여부.
-    // fallback: "blocking",
-    fallback: false,
-  };
-}
 
 export default UserDetail;
