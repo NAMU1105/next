@@ -19,6 +19,7 @@ const typeDefs = gql`
     peoplePaginated(page: Int!, per_page: Int!): [People]
     users: [User!]!
     userByID(id: String!): User
+    userByEmail(id: String!): User
   }
 `;
 

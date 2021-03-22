@@ -24,6 +24,7 @@ const resolvers = {
   Query: {
     users: (parent, args) => dbWorks.getUsers(args),
     userByID: (parent, args) => dbWorks.getUserById(args),
+    userByEmail: (parent, args) => dbWorks.getUserByEmail(args),
   },
   Mutation: {
     signUp: (parent, args) => dbWorks.signUp(args),

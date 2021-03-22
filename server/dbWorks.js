@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require("uuid");
 const database = require("./database.js");
+const User = require("./models/users");
 
 const dataFiltered = (which, args) => {
   let result = database[which].filter((item) => {
@@ -105,14 +106,28 @@ const dbWorks = {
   },
 
   // User
-  getUsers: (args) =>
-    dataFiltered("users", args).map((user) => {
-      return user;
-    }),
+  getUsers: async (req, res, next) => {
+    // dataFiltered("users", args).map((user) => {
+    //   return user;
+    // }),
+
+    try {
+      const users = await User.find();
+      return users;
+    } catch (err) {
+      console.log(err);
+      throw err;
+    }
+  },
 
   getUserById: (args) => {
     return database.users.find((user) => {
       return user.id === args.id;
+    });
+  },
+  getUserByEmail: (args) => {
+    return database.users.find((user) => {
+      return user.email === args.email;
     });
   },
 
