@@ -188,6 +188,15 @@ const Auth: React.FC<IF> = (props: IF) => {
       >
         Change mode
       </Button>
+
+      <Button
+        type="link"
+        href="http://49.247.208.236:4000/auth"
+        size="sm"
+        bgColor="danger"
+      >
+        GOOGLE
+      </Button>
     </>
   );
 };

@@ -78,10 +78,20 @@ module.exports = {
         backdrop: "rgba(0, 0, 0, 0.75)",
       },
 
+      textColor: {
+        inherit: "inherit",
+      },
+
       keyframes: {
         wiggle: {
           "0%, 100%": { transform: "rotate(-6deg)" },
           "50%": { transform: "rotate(6deg)" },
+        },
+        shimmer: {
+          "100%": {
+            transform: "translateX(0%)",
+            opacity: 0,
+          },
         },
         chase: {
           "0%": {
@@ -139,6 +149,7 @@ module.exports = {
         wiggle: "wiggle 0.5s ease-in-out infinite",
         bounceHorizontal: "bounceHorizontal 1s ease-in infinite",
         chase: "chase 2s linear infinite",
+        shimmer: "shimmer 2.5s ease-out infinite",
       },
 
       screens: {
@@ -205,10 +216,12 @@ module.exports = {
       backgroundColor: ["active", "checked", "odd", "disabled", "important"],
       borderColor: ["checked"],
       fill: ["hover", "focus"],
-      textColor: ["disabled"],
+      textColor: ["group-focus", "focus-within", "disabled", "checked"],
       outline: ["hover", "active", "focus"],
-      margin: ["first"],
-      scale: ["active", "group-hover", "hover"],
+      margin: ["first", "focus", "group-focus", "focus-within"],
+      scale: ["active", "group-hover", "group-focus", "hover"],
+      borderRadius: ["checked"],
+      boxShadow: ["checked"],
     },
   },
   plugins: [
@@ -265,8 +278,24 @@ module.exports = {
         },
       };
 
+      const loadingUtilities = {
+        ".loading": {
+          position: "absolute",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          transform: "translateX(-100%)",
+          // backgroundImage:
+          //   "linear-gradient(90deg, rgba(233, 233, 233, 1) 0, rgba(233, 233, 233, 0.9) 50%, rgba(233, 233, 233, 0.8) 100%)",
+          animation: "shimmer 1.2s ease-out infinite",
+          content: "",
+        },
+      };
+
       addUtilities(contentUtilities, ["before", "after"]);
       addUtilities(inputUtilities, ["after"]);
+      addUtilities(loadingUtilities, ["after"]);
     }),
   ],
 };

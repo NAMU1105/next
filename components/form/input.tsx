@@ -131,7 +131,17 @@ export const Input: React.FC<InputTextProps> = (props) => {
     name: props.name,
   });
 
+  // switch (props.) {
+  //   case value:
+
+  //     break;
+
+  //   default:
+  //     break;
+  // }
+
   // let element;
+  // Textarea일 경우
   if (props.multiLine) {
     return (
       // <div className={`w-full`}>
@@ -154,6 +164,8 @@ export const Input: React.FC<InputTextProps> = (props) => {
       ></textarea>
       // </div>
     );
+
+    // 서치바 인풋일 경우
   } else if (props.searchbar === "true") {
     return (
       <div
@@ -201,6 +213,7 @@ export const Input: React.FC<InputTextProps> = (props) => {
     );
   } else {
     return (
+      // 일반 인풋일 경우
       // <div className={`w-full`}>
       <div
         className={classNames`w-full ${props.customstyle && props.customstyle}`}
@@ -239,7 +252,6 @@ Input.defaultProps = {
 // checkbox
 ////****************************** */
 // TODO: checkbox icon 도 커스텀
-
 interface CheckboxProps extends InputProps {
   boxSize?: "sm" | "md" | "lg" | "xl";
 }
@@ -270,7 +282,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({ children, ...props }) => {
           {...field}
           {...props}
         />
-        <span>{props.label}</span>
+        <span className={classNames`${FONT_SIZE_VARIANT_MAPS[props.textsize]}`}>
+          {props.label}
+        </span>
         {children}
       </label>
       {meta.touched && meta.error ? <div className="error"></div> : null}
@@ -281,9 +295,9 @@ export const Checkbox: React.FC<CheckboxProps> = ({ children, ...props }) => {
 ////****************************** */
 // radio
 ////****************************** */
-
 interface RadioProps extends InputProps {
   radiosize?: "sm" | "md" | "lg" | "xl";
+  value: string;
 }
 export const Radio: React.FC<RadioProps> = ({ children, ...props }) => {
   const [field, meta] = useField({
@@ -305,6 +319,7 @@ export const Radio: React.FC<RadioProps> = ({ children, ...props }) => {
           ${props.customstyle && props.customstyle}
           ${props.disabled && DISABLED_VARIANT_MAPS["radio"]}
           `}
+          value={props.value}
           // {...props.disabled&&disabled={true}}
           {...field}
           {...props}

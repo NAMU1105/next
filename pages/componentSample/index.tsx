@@ -7,6 +7,30 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
+import styled from "styled-components";
+
+const InputTextWrapper = styled.input.attrs({
+  className:
+    "appearance-none border-2 border-white rounded w-full py-2 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-white",
+})`
+  + label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0.7rem 0.3rem;
+    padding: 0 0.3rem;
+    background-color: transparent;
+    color: red;
+    font-size: 1.2rem;
+    transition: all ease 0.2s;
+  }
+
+  &:focus + label {
+    margin: -1rem 0.3rem;
+    background-color: white;
+    font-size: 1rem;
+  }
+`;
 
 const Index = (props) => {
   const testFunction = () => {
@@ -18,9 +42,52 @@ const Index = (props) => {
   };
   return (
     <section className="w-full">
+      <ul
+        id="filter1"
+        className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
+      >
+        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
+          <input type="radio" name="filter1" id="filter1" className="sr-only" />
+          <label
+            htmlFor="filter1"
+            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
+          >
+            Complete
+          </label>
+        </li>
+        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
+          <input type="radio" name="filter2" id="filter2" className="sr-only" />
+          <label
+            htmlFor="filter2"
+            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
+          >
+            Complete
+          </label>
+        </li>
+
+        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
+          <input
+            type="radio"
+            name="filter3"
+            id="filter3"
+            className="sr-only"
+            checked
+            readOnly
+          />
+          <label
+            htmlFor="filter3"
+            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
+          >
+            checked
+          </label>
+        </li>
+      </ul>
+
+      {/* loading */}
+
       {/* buttons */}
-      <p>buttons</p>
       <div id="buttons">
+        <p>buttons</p>
         {/* TODO: a 타입의 버튼일 때는 온클릭 못주는 등의 제한 방법 찾아보기 */}
         <Button
           color="danger"
@@ -51,8 +118,8 @@ const Index = (props) => {
       </div>
 
       {/* alerts */}
-      <p>alerts</p>
       <div id="alerts">
+        <p>alerts</p>
         <Alert type="info">Info</Alert>
         <Alert type="info" includeButton>
           close
@@ -105,6 +172,8 @@ const Index = (props) => {
           <Formik
             initialValues={{
               email: "",
+              picked: "",
+              picked2: "",
             }}
             validationSchema={TestSchema}
             onSubmit={(
@@ -186,6 +255,25 @@ const Index = (props) => {
                   disabled
                 />
 
+                <div className="flex bg-white items-center justify-center w-full h-64">
+                  <div className="px-4 py-2 border-2 border-gray-400 rounded relative">
+                    <label className="absolute -my-6 -mx-2 bg-white px-2 text-gray-400">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      className="appearance-none border-2 border-white rounded w-full py-2 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-white"
+                      placeholder="Max Mustermann"
+                    />
+                  </div>
+
+                  <div className=" focus-within:border-red-700  px-4 py-2 border-2 border-red-500 rounded relative ml-16">
+                    <InputTextWrapper type="text" />
+                    {/* placeholder="Max Mustermann" */}
+                    <label>Name</label>
+                  </div>
+                </div>
+
                 <Checkbox name="default" label="default" />
                 <Checkbox
                   name="danger"
@@ -257,33 +345,48 @@ const Index = (props) => {
 
                 {/* radio */}
                 <div className="flex flex-col">
-                  <span>radio name</span>
-                  <Radio label="default radio" name="default" />
-                  <Radio
-                    label="primary radio"
-                    name="primary"
-                    color="primary"
-                    ringcolor="danger"
-                    radiosize="xl"
-                    ringwidth="lg"
-                  />
-                  <Radio
-                    label="secondary radio"
-                    name="secondary"
-                    color="secondary"
-                  />
-                  <Radio
-                    label="danger radio"
-                    name="danger"
-                    color="danger"
-                    radiosize="md"
-                  />
-                  <Radio
-                    label="default radio lg"
-                    name="defaultLg"
-                    radiosize="lg"
-                  />
-                  <Radio label="default radio" name="default" textsize="xl" />
+                  <div role="group" aria-labelledby="my-radio-group">
+                    <span>radio name</span>
+                    <Radio
+                      label="default radio"
+                      name="picked"
+                      value="default"
+                    />
+                    <Radio
+                      label="primary radio"
+                      name="picked"
+                      color="primary"
+                      ringcolor="danger"
+                      radiosize="xl"
+                      ringwidth="lg"
+                      value="primary"
+                    />
+                    <Radio
+                      label="secondary radio"
+                      name="picked"
+                      color="secondary"
+                      value="secondary"
+                    />
+                    <Radio
+                      label="danger radio"
+                      name="picked"
+                      color="danger"
+                      radiosize="md"
+                      value="danger"
+                    />
+                    <Radio
+                      label="default radio lg"
+                      name="picked2"
+                      radiosize="lg"
+                      value="large"
+                    />
+                    <Radio
+                      label="default radio"
+                      name="picked2"
+                      textsize="xl"
+                      value="xl"
+                    />
+                  </div>
                 </div>
 
                 {/* btn */}

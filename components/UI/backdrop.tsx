@@ -14,6 +14,9 @@ const Backdrop: React.FC<BackdropProps> = (props: BackdropProps) => {
 
     if (isMonted) {
       setShowBackdrop(true);
+      // document.body.style.overflow = "hidden";
+      // 스크롤 방지 해제
+      // document.body.style.overflow = "unset"
     }
   }, []);
 
