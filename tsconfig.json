@@ -13,6 +13,17 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve"
+    // "plugins": [
+    //   {
+    //     "transform": "typescript-plugin-styled-components",
+    //     "type": "config",
+
+    //     // other typescript-plugin-styled-components options can be added here
+    //     "minify": true,
+    //     "ssr": true
+    //   },
+
+    // ],
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]

@@ -213,15 +213,28 @@ module.exports = {
   },
   variants: {
     extend: {
-      backgroundColor: ["active", "checked", "odd", "disabled", "important"],
+      backgroundColor: [
+        "active",
+        "checked",
+        "odd",
+        "disabled",
+        "important",
+        "label-checked",
+      ],
       borderColor: ["checked"],
       fill: ["hover", "focus"],
-      textColor: ["group-focus", "focus-within", "disabled", "checked"],
+      textColor: [
+        "group-focus",
+        "focus-within",
+        "disabled",
+        "checked",
+        "label-checked",
+      ],
       outline: ["hover", "active", "focus"],
       margin: ["first", "focus", "group-focus", "focus-within"],
       scale: ["active", "group-hover", "group-focus", "hover"],
-      borderRadius: ["checked"],
-      boxShadow: ["checked"],
+      borderRadius: ["checked", "label-checked"],
+      boxShadow: ["checked", "label-checked"],
     },
   },
   plugins: [
@@ -253,6 +266,7 @@ module.exports = {
         });
       });
     }),
+
     plugin(({ addUtilities }) => {
       const contentUtilities = {
         ".content": {
@@ -296,6 +310,17 @@ module.exports = {
       addUtilities(contentUtilities, ["before", "after"]);
       addUtilities(inputUtilities, ["after"]);
       addUtilities(loadingUtilities, ["after"]);
+    }),
+
+    // 라디오 인풋 체크하면 그 label값의 css속성을 바꿔주는 variant
+    plugin(({ addVariant, e }) => {
+      addVariant("label-checked", ({ modifySelectors, separator }) => {
+        modifySelectors(({ className }) => {
+          const eClassName = e(`label-checked${separator}${className}`); // escape class
+          const yourSelector = 'input[type="radio"]'; // your input selector. Could be any
+          return `${yourSelector}:checked ~ .${eClassName}`; // ~ - CSS selector for siblings
+        });
+      });
     }),
   ],
 };

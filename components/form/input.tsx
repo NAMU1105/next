@@ -1,13 +1,20 @@
 import React from "react";
 import { useField } from "formik";
-// import styled from "styled-components";
+import styled from "styled-components";
+import tw from "twin.macro";
+
 import { classNames } from "../../utils/utils";
 
 // TODO: 반복되는 코드 줄이기
 // 1. maps 통일
 // 2. ringwidth같은 공통 적인 속성 따로 만든 다음에 상속하기
 
+// TODO: 디자인이 너무 많아지니 인풋 타입별로 파일 나눠서 관리하는 거 고려해보기
+
 // //////////////////////////////////////////////////////////////
+///////////////////////
+//// common props starts
+///////////////////////
 
 const FIELD_SIZE_VARIANT_MAPS = {
   md: "w-1/3",
@@ -113,6 +120,38 @@ interface InputProps {
   // borderStyle?:"rectangle"|"round-all"|"round-"
 }
 
+///////////////////////
+//// common props end
+///////////////////////
+
+/* styled components starts */
+
+const InputTextWrapper = styled.div.attrs({
+  className:
+    "focus-within:border-red-700  px-4 py-2 border-2 border-red-500 rounded relative ml-16",
+})`
+  > input {
+    ${tw`appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white`}
+    &:focus + label {
+      margin: -1rem 0.3rem;
+      background-color: white;
+      font-size: 1rem;
+      color: rgba(185, 28, 28, 1);
+    }
+  }
+  > input + label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0.7rem 0.3rem;
+    padding: 0 0.3rem;
+    background-color: transparent;
+    color: red;
+    font-size: 1.2rem;
+    transition: all ease 0.2s;
+  }
+`;
+/* styled components ends */
 interface InputTextProps extends InputProps {
   type: "email" | "text" | "password";
   //multiline일 경우 textarea

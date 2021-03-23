@@ -7,6 +7,7 @@ import { onError } from "@apollo/client/link/error";
 let apolloClient;
 
 const requestLink = new HttpLink({
+  // uri: "http://49.247.208.236:4000/",
   uri: process.env.REACT_APP_GRAPHQL_END_POINT,
 });
 // const requestLink = new HttpLink({ uri: "http://3.34.126.188/graphql_api" });

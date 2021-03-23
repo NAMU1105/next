@@ -8,12 +8,28 @@ import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
 import styled from "styled-components";
+import tw from "twin.macro";
 
-const InputTextWrapper = styled.input.attrs({
-  className:
-    "appearance-none border-2 border-white rounded w-full py-2 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-white",
-})`
-  + label {
+import { classNames } from "../../utils/utils";
+
+type InputWrapperType = {
+  border?: string;
+  rounded?: string;
+};
+
+const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
+  className: classNames`focus-within:border-red-700 px-4 py-2 border-red-500 relative ml-16 ${props.border} ${props.rounded}`,
+}))<InputWrapperType>`
+  > input {
+    ${tw`appearance-none border-2 border-transparent rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white  `}
+    &:focus + label {
+      margin: -1rem 0.3rem;
+      background-color: white;
+      font-size: 1rem;
+      color: rgba(185, 28, 28, 1);
+    }
+  }
+  > input + label {
     position: absolute;
     left: 0;
     top: 0;
@@ -23,12 +39,6 @@ const InputTextWrapper = styled.input.attrs({
     color: red;
     font-size: 1.2rem;
     transition: all ease 0.2s;
-  }
-
-  &:focus + label {
-    margin: -1rem 0.3rem;
-    background-color: white;
-    font-size: 1rem;
   }
 `;
 
@@ -42,47 +52,6 @@ const Index = (props) => {
   };
   return (
     <section className="w-full">
-      <ul
-        id="filter1"
-        className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
-      >
-        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-          <input type="radio" name="filter1" id="filter1" className="sr-only" />
-          <label
-            htmlFor="filter1"
-            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
-          >
-            Complete
-          </label>
-        </li>
-        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-          <input type="radio" name="filter2" id="filter2" className="sr-only" />
-          <label
-            htmlFor="filter2"
-            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
-          >
-            Complete
-          </label>
-        </li>
-
-        <li className="filter-switch-item flex relative h-8 bg-gray-300x">
-          <input
-            type="radio"
-            name="filter3"
-            id="filter3"
-            className="sr-only"
-            checked
-            readOnly
-          />
-          <label
-            htmlFor="filter3"
-            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0	checked:text-inherit checked:bg-white checked:rounded checked:shadow "
-          >
-            checked
-          </label>
-        </li>
-      </ul>
-
       {/* loading */}
 
       {/* buttons */}
@@ -174,6 +143,7 @@ const Index = (props) => {
               email: "",
               picked: "",
               picked2: "",
+              picked3: "",
             }}
             validationSchema={TestSchema}
             onSubmit={(
@@ -262,16 +232,15 @@ const Index = (props) => {
                     </label>
                     <input
                       type="text"
-                      className="appearance-none border-2 border-white rounded w-full py-2 text-grey-darker leading-tight focus:outline-none focus:bg-white focus:border-white"
+                      className="appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white"
                       placeholder="Max Mustermann"
                     />
                   </div>
 
-                  <div className=" focus-within:border-red-700  px-4 py-2 border-2 border-red-500 rounded relative ml-16">
-                    <InputTextWrapper type="text" />
-                    {/* placeholder="Max Mustermann" */}
+                  <InputTextWrapper border="border-2" rounded="rounded">
+                    <input type="text" />
                     <label>Name</label>
-                  </div>
+                  </InputTextWrapper>
                 </div>
 
                 <Checkbox name="default" label="default" />
@@ -386,6 +355,57 @@ const Index = (props) => {
                       textsize="xl"
                       value="xl"
                     />
+                  </div>
+                  <div role="group" aria-labelledby="my-radio-group">
+                    <ul
+                      id="filter1"
+                      className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
+                    >
+                      <li className="filter-switch-item flex relative h-8 ">
+                        <input
+                          type="radio"
+                          name="picked3"
+                          id="filter2"
+                          className="sr-only"
+                        />
+                        <label
+                          htmlFor="filter2"
+                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
+                        >
+                          Complete
+                        </label>
+                      </li>
+
+                      <li className="filter-switch-item flex relative h-8 ">
+                        <input
+                          type="radio"
+                          name="picked3"
+                          id="filter3"
+                          className="sr-only"
+                        />
+                        <label
+                          htmlFor="filter3"
+                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
+                        >
+                          checked
+                        </label>
+                      </li>
+
+                      <li className="filter-switch-item flex relative h-8 ">
+                        <input
+                          type="radio"
+                          name="picked3"
+                          id="filter34"
+                          className="sr-only"
+                        />
+                        <label
+                          htmlFor="filter34"
+                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
+                        >
+                          checked
+                        </label>
+                      </li>
+                    </ul>
                   </div>
                 </div>
 
