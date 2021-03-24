@@ -38,8 +38,10 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
 
   const setPageHandler = (param) => {
     console.log("setPageHandler:", param);
-
+    // 클릭한 페이지가 현재 페이지일 경우 리턴
+    if (page === param) return;
     // TODO: 맨앞(0), 맨뒤(-1) 클릭 처리도 해주기
+    // console.log("it works!");
     setPage(param);
   };
 
@@ -60,6 +62,7 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
   // pagination 페이징
   useEffect(() => {
     if (!isMonted) return;
+
     console.log("page: ", page);
     changePage(page);
   }, [page]);
@@ -98,17 +101,12 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
 
       {/* <p>pagination</p> */}
       <Pagination
-        startPage={page}
-        endPage={totalPage}
+        currentPage={page}
+        totalPage={totalPage}
+        itemsPerPage={USER_PER_PAGE}
+        pagesPerBlock={5}
         onClick={setPageHandler}
       />
-      {/* <ul>
-        <li onClick={() => setPageHandler(1)}>1</li>
-        <li onClick={() => setPageHandler(2)}>2</li>
-        <li onClick={() => setPageHandler(3)}>3</li>
-        <li onClick={() => setPageHandler(4)}>4</li>
-        <li onClick={() => setPageHandler(5)}>5</li>
-      </ul> */}
     </section>
   );
 };
