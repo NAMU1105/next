@@ -96,7 +96,7 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
         })}
       </ul>
 
-      <p>pagination</p>
+      {/* <p>pagination</p> */}
       <Pagination
         startPage={page}
         endPage={totalPage}

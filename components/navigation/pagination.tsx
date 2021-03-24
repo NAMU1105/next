@@ -6,18 +6,6 @@ const Paging = styled.nav.attrs({
     "pt-5 relative z-0 inline-flex self-center rounded-md shadow-sm -space-x-px",
 })``;
 
-interface PaginationProps {
-  //   hasPrev?: boolean;
-  //   hasNext?: boolean;
-  // 중간에 ...버튼이 있는지 여부
-  //   hasEllipsis?: boolean;
-  // 위 세 개는 여기서 자체적으로 결정해야 하지 않을까?
-  //   children: ReactNode;
-  startPage: number;
-  endPage: number;
-  onClick: (p: number) => void;
-}
-
 const Previous = () => {
   return (
     <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
@@ -60,11 +48,22 @@ const Next = () => {
   );
 };
 
+interface PaginationProps {
+  //   hasPrev?: boolean;
+  //   hasNext?: boolean;
+  // 중간에 ...버튼이 있는지 여부
+  //   hasEllipsis?: boolean;
+  // 위 세 개는 여기서 자체적으로 결정해야 하지 않을까?
+  //   children: ReactNode;
+  startPage: number;
+  endPage: number;
+  onClick: (p: number) => void;
+}
+
 ///////////////////
 const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
-  // const {classStyle} = props;
-  const test = ({ pageTo }) => {
-    console.log("test: ", pageTo);
+  const changePage = ({ pageTo }) => {
+    console.log("changePage: ", pageTo);
     props.onClick(pageTo);
   };
 
@@ -75,7 +74,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
   const PageItem: React.FC<PageItemProps> = (pageTo: PageItemProps) => {
     return (
       <button
-        onClick={() => test(pageTo)}
+        onClick={() => changePage(pageTo)}
         className="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
       >
         {pageTo.pageTo}
@@ -86,16 +85,15 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
   return (
     <Paging aria-label="Pagination">
       {/* {props.hasPrev && <Previous />} */}
-      {/* {props.children} */}
       <Previous />
-      {/* <PageItem pageTo={1} /> */}
-      {/* <button onClick={() => test(1)}>here</button>
-      <button onClick={() => test(2)}>2</button>
-      <button onClick={() => test(3)}>3</button>
-      <button onClick={() => test(4)}>4</button> */}
 
+      {/* <PageItem pageTo={1} />
       <PageItem pageTo={2} />
-      <PageItem pageTo={3} />
+      <PageItem pageTo={3} /> */}
+
+      {[...Array(props.endPage)].map((n, index) => {
+        return <PageItem key={index} pageTo={index + 1} />;
+      })}
 
       <Next />
       {/* {props.hasNext && <Next />} */}
