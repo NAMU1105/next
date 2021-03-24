@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { initializeApollo } from "../../lib/apolloClient";
 import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
-import { GET_USERS, GET_PEOPLE_PAGENATED } from "../../lib/queries/users";
+import {
+  GET_ALL_USER_COUNT_AND_USER_PAGENATED,
+  GET_USERS,
+  GET_USER_PAGENATED,
+} from "../../lib/queries/users";
+import Pagination from "../../components/navigation/pagination";
 
 let isMonted = false;
+// let totalPage;
 const USER_PER_PAGE = 5;
 const apolloClient = initializeApollo();
 
@@ -15,23 +21,32 @@ type Users = {
 };
 interface USERS_PROPS {
   userPaginated: Array<Users>;
+  // users: Array<Users>;
+  userAllCount: number;
 }
 
 export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
   const [users, setUsers] = useState<Array<Users>>(props.userPaginated);
-  const [page, setPage] = useState<number>(1);
-  const [totalPage, setTotalPage] = useState<number>(1);
+  const [page, setPage] = useState<number>(1); // current page
+  const [totalPage, setTotalPage] = useState<number>(
+    Math.ceil(props.userAllCount / USER_PER_PAGE)
+  );
 
   // const
 
+  // console.log(props.userAllCount);
+
   const setPageHandler = (param) => {
+    console.log("setPageHandler:", param);
+
+    // TODO: 맨앞(0), 맨뒤(-1) 클릭 처리도 해주기
     setPage(param);
   };
 
   // 페이지네이션 아이템 클릭 시 페이지 바꿔주는 함수
   const changePage = async (param) => {
     const { data, error } = await apolloClient.query({
-      query: GET_PEOPLE_PAGENATED,
+      query: GET_USER_PAGENATED,
       variables: {
         page: param,
         per_page: USER_PER_PAGE,
@@ -55,6 +70,8 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
       // console.log("first");
       // console.log(isMonted);
       isMonted = true;
+      // totalPage = Math.ceil(props.userAllCount / USER_PER_PAGE);
+      console.log(totalPage);
     }
     // console.log("second");
     // console.log(isMonted);
@@ -80,37 +97,40 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
       </ul>
 
       <p>pagination</p>
-      <ul>
+      <Pagination
+        startPage={page}
+        endPage={totalPage}
+        onClick={setPageHandler}
+      />
+      {/* <ul>
         <li onClick={() => setPageHandler(1)}>1</li>
         <li onClick={() => setPageHandler(2)}>2</li>
         <li onClick={() => setPageHandler(3)}>3</li>
         <li onClick={() => setPageHandler(4)}>4</li>
         <li onClick={() => setPageHandler(5)}>5</li>
-
-        {/* {props.userPaginated.map((user) => {
-          const { id, firstName } = user;
-          return <li key={id} onClick={setPageHandler}></li>;
-        })} */}
-      </ul>
+      </ul> */}
     </section>
   );
 };
 
 export const getServerSideProps = async (ctx) => {
-  const { data, error } = await apolloClient.query({
-    query: GET_PEOPLE_PAGENATED,
-    variables: {
-      page: 1,
-      per_page: USER_PER_PAGE,
-    },
-  });
+  const { data, error } = await apolloClient.query(
+    {
+      query: GET_ALL_USER_COUNT_AND_USER_PAGENATED,
+      variables: {
+        page: 1,
+        per_page: USER_PER_PAGE,
+      },
+    }
+    // query: GET_USERS
+  );
 
   //   invalid한 url일 경우 404페이지 띄움
   if (!data) {
     return { notFound: true };
   }
 
-  // console.log("getServerSideProps data: ", data.userPaginated);
+  console.log("getServerSideProps data: ", data);
 
   return {
     props: data,
