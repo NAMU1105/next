@@ -1,8 +1,15 @@
 // import Head from "next/head";
 // import { from } from "apollo-link";
-import React from "react";
+// import { useEffect } from "react";
+// import { initializeApollo } from "../lib/apolloClient";
+// import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
+// import { GET_PEOPLE, GET_PEOPLE_PAGENATED } from "../lib/queries/users";
+// let isMonted = false;
+
 const Home = () => {
-  // const Home = ({ data }) => {
+  // const { data, error, loading } = useQuery(GET_PEOPLE);
+  // console.log(data);
+
   return (
     <>
       {/* <h1>{data.users[0].name}</h1> */}

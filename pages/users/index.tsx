@@ -1,63 +1,108 @@
 import { useEffect, useState } from "react";
-// import Link from "next/link";
+import Link from "next/link";
 import { initializeApollo } from "../../lib/apolloClient";
 import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
-import { GET_PEOPLE, GET_PEOPLE_PAGENATED } from "../../lib/queries/users";
+import { GET_USERS, GET_PEOPLE_PAGENATED } from "../../lib/queries/users";
+
 let isMonted = false;
+const USER_PER_PAGE = 5;
+const apolloClient = initializeApollo();
 
-export const Index = () => {
-  const [users, setUsers] = useState([]);
+type Users = {
+  __typename: string;
+  id: string;
+  firstName: string;
+};
+interface USERS_PROPS {
+  userPaginated: Array<Users>;
+}
+
+export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
+  const [users, setUsers] = useState<Array<Users>>(props.userPaginated);
   const [page, setPage] = useState<number>(1);
+  const [totalPage, setTotalPage] = useState<number>(1);
 
-  function getPeople() {
-    const apolloClient = initializeApollo();
-    const { data, error } = useQuery(GET_PEOPLE);
-    console.log(data);
-  }
+  // const
 
+  const setPageHandler = (param) => {
+    setPage(param);
+  };
+
+  // 페이지네이션 아이템 클릭 시 페이지 바꿔주는 함수
+  const changePage = async (param) => {
+    const { data, error } = await apolloClient.query({
+      query: GET_PEOPLE_PAGENATED,
+      variables: {
+        page: param,
+        per_page: USER_PER_PAGE,
+      },
+    });
+
+    console.log("paging data: ", data);
+    setUsers(data.userPaginated);
+  };
+
+  // pagination 페이징
   useEffect(() => {
-    if (!isMonted) isMonted = true;
+    if (!isMonted) return;
+    console.log("page: ", page);
+    changePage(page);
+  }, [page]);
 
-    // const apolloClient = initializeApollo();
-    // const { data, error } = await apolloClient.query({
-    //   query: GET_PEOPLE,
-    // });
-    // console.log(data);
-    // async function getPeople() {
-    //   const apolloClient = initializeApollo();
-    //   const { data, error } = await apolloClient.query({
-    //     query: GET_PEOPLE,
-    //   });
-    //   console.log(data);
-    // }
-    // getPeople();
-    if (isMonted) {
-      // getPeople();
+  // 이 코드가 pagination코드 아래에 있어야 첫 페이지 렌더링 시 불필요한 1페이지 요청을 하지 않는다.
+  useEffect(() => {
+    if (isMonted === false) {
+      // console.log("first");
+      // console.log(isMonted);
+      isMonted = true;
     }
+    // console.log("second");
+    // console.log(isMonted);
   }, []);
 
+  // // if (isMonted) {
+  // const { loading, error, data } = useQuery(GET_PEOPLE);
+  // console.log(`data!: `, data);
+  // // }
+
   return (
-    <div className="users-page">
+    <section className="users-page">
       <h1>Users page</h1>
-      {/* <ul>
+      <ul>
         {users.map((user) => {
-          const { id, name, color } = user;
+          const { id, firstName } = user;
           return (
             <Link key={id} href={`/users/${id}`}>
-              <li style={{ color }}>{`${id}. ${name}(${color})`}</li>
+              <li key={id}>{`${id}. ${firstName}`}</li>
             </Link>
           );
         })}
-      </ul> */}
-    </div>
+      </ul>
+
+      <p>pagination</p>
+      <ul>
+        <li onClick={() => setPageHandler(1)}>1</li>
+        <li onClick={() => setPageHandler(2)}>2</li>
+        <li onClick={() => setPageHandler(3)}>3</li>
+        <li onClick={() => setPageHandler(4)}>4</li>
+        <li onClick={() => setPageHandler(5)}>5</li>
+
+        {/* {props.userPaginated.map((user) => {
+          const { id, firstName } = user;
+          return <li key={id} onClick={setPageHandler}></li>;
+        })} */}
+      </ul>
+    </section>
   );
 };
 
-export const getStaticProps = async () => {
-  const apolloClient = initializeApollo();
-
+export const getServerSideProps = async (ctx) => {
   const { data, error } = await apolloClient.query({
-    query: GET_PEOPLE,
+    query: GET_PEOPLE_PAGENATED,
+    variables: {
+      page: 1,
+      per_page: USER_PER_PAGE,
+    },
   });
 
   //   invalid한 url일 경우 404페이지 띄움
@@ -65,14 +110,32 @@ export const getStaticProps = async () => {
     return { notFound: true };
   }
 
-  console.log("data: ", data);
+  // console.log("getServerSideProps data: ", data.userPaginated);
 
   return {
-    props: {
-      loadedUser: data,
-    },
-    revalidate: 1, // 단위: 초
+    props: data,
   };
 };
+// export const getStaticProps = async () => {
+//   const apolloClient = initializeApollo();
+
+//   const { data, error } = await apolloClient.query({
+//     query: GET_PEOPLE,
+//   });
+
+//   //   invalid한 url일 경우 404페이지 띄움
+//   if (!data) {
+//     return { notFound: true };
+//   }
+
+//   // console.log("data: ", data);
+
+//   return {
+//     props: {
+//       loadedUser: data,
+//     },
+//     revalidate: 1, // 단위: 초
+//   };
+// };
 
 export default Index;
