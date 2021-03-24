@@ -101,7 +101,7 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
 
       {/* <p>pagination</p> */}
       <Pagination
-        currentPage={page}
+        // currentPage={page}
         totalPage={totalPage}
         itemsPerPage={USER_PER_PAGE}
         pagesPerBlock={5}
