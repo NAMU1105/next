@@ -1,4 +1,7 @@
 import React from "react";
+import styled from "styled-components";
+import tw from "twin.macro";
+
 import { Avatar, AvatarGroup } from "../../components/UI/avatar";
 import { Alert } from "../../components/UI/alert";
 import Button from "../../components/form/button";
@@ -7,10 +10,9 @@ import { Formik, Field, Form, FormikHelpers } from "formik";
 import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
-import styled from "styled-components";
-import tw from "twin.macro";
 
 import { classNames } from "../../utils/utils";
+import Table from "../../components/table/table";
 
 type InputWrapperType = {
   border?: string;
@@ -52,6 +54,8 @@ const Index = (props) => {
   };
   return (
     <section className="w-full">
+      <Table />
+
       {/* loading */}
 
       {/* buttons */}
