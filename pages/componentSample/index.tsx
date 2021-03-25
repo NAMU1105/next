@@ -12,7 +12,8 @@ import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
 
 import { classNames } from "../../utils/utils";
-import Table from "../../components/table/table";
+import { Table, TH, TR, TD } from "../../components/table/table";
+import { TheadWrapper, TbodyWrapper } from "../../components/table/table";
 
 type InputWrapperType = {
   border?: string;
@@ -54,7 +55,41 @@ const Index = (props) => {
   };
   return (
     <section className="w-full">
-      <Table />
+      {/* Table 1 */}
+      <Table>
+        <TheadWrapper>
+          <tr>
+            <TH>
+              <input
+                type="checkbox"
+                name=""
+                id=""
+                // onChange={(e) => changeAllChekcedHandler(e.target.checked)}
+                // checkItems의 갯 수와 불러오는 데이터가 같을 때, 전체 선택을 활성화
+                // 하나라도 빼면 체크 박스 해제
+                // checked={checkItems.length === postsPerPage ? true : false}
+              />
+            </TH>
+            <TH title="table head!" />
+            <TH title="table head!" />
+            <TH title="table head!" />
+            <TH title="table head!" />
+            <TH>
+              <span className="sr-only">Action</span>
+            </TH>
+          </tr>
+        </TheadWrapper>
+        <TbodyWrapper>
+          <TR>
+            <TD value={<div style={{ color: "red" }}>test</div>} />
+            <TD value={<div>test</div>} />
+            <TD value={<div>test</div>} />
+            <TD value={<div>test</div>} />
+            <TD value={<div>test</div>} />
+            <TD value={<div style={{ color: "red" }}>test</div>} />
+          </TR>
+        </TbodyWrapper>
+      </Table>
 
       {/* loading */}
 
