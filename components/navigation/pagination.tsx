@@ -35,7 +35,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
     ...Array(props.pagesPerBlock),
   ]);
 
-  const blockPrevStateInput = useRef<number>(1);
+  // const blockPrevStateInput = useRef<number>(1);
 
   // 페이지 전환
   const changePage = ({ pageTo }) => {
@@ -44,8 +44,45 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
     props.onClick(pageTo);
   };
 
+  const changeCurrentBlock = (direction) => {
+    // 다음버튼을 눌렀을 경우
+    if (direction === "next") {
+      setCurrentBlock((prev) =>
+        prev === totalBlocks ? totalBlocks : prev + 1
+      );
+    } else {
+      setCurrentBlock((prev) => (prev === 1 ? 1 : prev - 1));
+    }
+  };
+
+  //   페이지 블록도 바꿔준다.
+  useEffect(() => {
+    const newArray = [];
+    for (let index = blockStartPage; index <= blockEndPage; index++) {
+      newArray.push(index);
+    }
+
+    setBlockArray(newArray);
+
+    // // // TODO: 현재 페이지도 바꿔준다.
+    // // // 전 블록값을 확인해서 전 블록값보다 커졌으면 startpage로, 작아졌으면 endpage로 바꿔준다.
+    // 현재 페이지가 blockEndPage 보다 크면 전 블록으로 간 것
+    // 현재 페이지가  blockStartPage보다 작으면 다음 블록으로 간 것
+    if (currentPage > blockEndPage) {
+      changePage({ pageTo: blockEndPage });
+    } else if (currentPage < blockStartPage) {
+      changePage({ pageTo: blockStartPage });
+    } else {
+      console.log("else");
+    }
+  }, [blockEndPage, blockStartPage]);
+
   // 페이징 블록 시작, 끝 페이지 처리
   useEffect(() => {
+    // blockPrevStateInput.current = currentBlock;
+    // console.log(`currentBlock: `, currentBlock);
+    // console.log(`blockPrevStateInput: `, blockPrevStateInput);
+
     setBlockStartPage(
       currentBlock * props.pagesPerBlock - (props.pagesPerBlock - 1)
     );
@@ -56,53 +93,9 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
     );
 
     // console.clear();
-    // blockPrevStateInput.current = currentBlock;
-    // console.log(`currentBlock: `, currentBlock);
-    // console.log(`blockPrevStateInput: `, blockPrevStateInput);
   }, [currentBlock]);
 
-  const changeBlock = (direction) => {
-    // console.log(direction);
-    // 다음버튼을 눌렀을 경우
-    if (direction === "next") {
-      setCurrentBlock((prev) =>
-        prev === totalBlocks ? totalBlocks : prev + 1
-      );
-      blockPrevStateInput.current = blockPrevStateInput.current + 1;
-    } else {
-      setCurrentBlock((prev) => (prev === 1 ? 1 : prev - 1));
-      blockPrevStateInput.current = blockPrevStateInput.current - 1;
-    }
-  };
-
-  //   페이지 블록도 바꿔준다.
-  useEffect(() => {
-    const newArray = [];
-
-    for (let index = blockStartPage; index <= blockEndPage; index++) {
-      newArray.push(index);
-    }
-
-    setBlockArray(newArray);
-
-    // // // TODO: 현재 페이지도 바꿔준다.
-    // // // 전 블록값을 확인해서 전 블록값보다 커졌으면 startpage로, 작아졌으면 endpage로 바꿔준다.
-    // console.log(`currentBlock: `, currentBlock);
-    // console.log(`blockPrevStateInput: `, blockPrevStateInput.current);
-    // if (!isMonted) return;
-    // if (currentBlock > blockPrevStateInput.current) {
-    //   setCurrentPage(blockStartPage);
-    // } else {
-    //   setCurrentPage(blockEndPage);
-    // }
-
-    // console.log("blockStartPage: ", blockStartPage);
-    // console.log("blockEndPage: ", blockEndPage);
-
-    // console.log("newArray: ", newArray);
-    // console.log("blockArray: ", blockArray);
-  }, [blockEndPage, blockStartPage]);
-
+  // mount됐는지 여부 확인
   useEffect(() => {
     if (isMonted === false) {
       isMonted = true;
@@ -113,7 +106,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
   const Next = () => {
     return (
       <button
-        onClick={() => changeBlock("next")}
+        onClick={() => changeCurrentBlock("next")}
         className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
         <span className="sr-only">Next</span>
@@ -138,7 +131,7 @@ const Pagination: React.FC<PaginationProps> = (props: PaginationProps) => {
   const Previous = () => {
     return (
       <button
-        onClick={() => changeBlock("prev")}
+        onClick={() => changeCurrentBlock("prev")}
         className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
       >
         <span className="sr-only">Previous</span>
