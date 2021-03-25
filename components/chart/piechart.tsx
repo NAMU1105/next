@@ -13,47 +13,44 @@ export const PieChart: React.FC<ChartProps> = (props: ChartProps) => {
   // const { width, responsiveWidth, height, responsiveHight } = props;
 
   return (
-    <article>
-      {/* <h3 className="text-center">New users/sales</h3> */}
-      {/* <div responsiveWidth={props.responsiveWidth}> */}
-      <div>
-        <Pie
-          //   id="pieChart"
-          data={{
-            labels: [...DUMMY_CHART_DATA.labels],
-            datasets: [
-              {
-                data: [12, 19, 3],
-                backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
-                // borderColor: "light-gray",
-                // borderWidth: 1,
-              },
-            ],
-          }}
-          height={300}
-          width={300}
-          options={{
-            maintainAspectRatio: false,
-            scales: {
-              xAxes: [
-                {
-                  stacked: true,
-                },
-              ],
-              yAxes: [
-                {
-                  stacked: true,
-                },
-              ],
+    <div>
+      <Pie
+        //   id="pieChart"
+        data={{
+          labels: [...DUMMY_CHART_DATA.labels],
+          datasets: [
+            {
+              data: [12, 19, 3],
+              backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
+              //   hoverBackgroundColor: ["#36A2EB", "#FFCE56", "#FF6384"],
+              // borderColor: "light-gray",
+              // borderWidth: 1,
             },
-            legend: {
-              labels: {
-                fontSize: 16,
-              },
+          ],
+        }}
+        height={300}
+        width={300}
+        options={{
+          maintainAspectRatio: false,
+          //   scales: {
+          //     xAxes: [
+          //       {
+          //         stacked: true,
+          //       },
+          //     ],
+          //     yAxes: [
+          //       {
+          //         stacked: true,
+          //       },
+          //     ],
+          //   },
+          legend: {
+            labels: {
+              fontSize: 16,
             },
-          }}
-        />
-      </div>
-    </article>
+          },
+        }}
+      />
+    </div>
   );
 };
