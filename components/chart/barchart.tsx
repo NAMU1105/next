@@ -89,30 +89,16 @@ export const HorizontalBarChart: React.FC<ChartProps> = (props: ChartProps) => {
     <div>
       <HorizontalBar
         data={{
+          labels: ["San Francisco", "Los Angeles", "San Diego"],
           datasets: [
             {
-              label: "Sales",
-              type: "line",
-              data: [51, 65, 40, 49, 60, 37, 40],
-              fill: false,
-              borderColor: "#EC932F",
-              backgroundColor: "#EC932F",
-              pointBorderColor: "#EC932F",
-              pointBackgroundColor: "#EC932F",
-              pointHoverBackgroundColor: "#EC932F",
-              pointHoverBorderColor: "#EC932F",
-              yAxisID: "y-axis-2",
-            },
-            {
-              type: "bar",
-              label: "Visitor",
-              data: [200, 185, 590, 621, 250, 400, 95],
-              fill: false,
-              backgroundColor: "#71B37C",
-              borderColor: "#71B37C",
-              hoverBackgroundColor: "#71B37C",
-              hoverBorderColor: "#71B37C",
-              yAxisID: "y-axis-1",
+              label: "Food",
+              data: [1455, 1032, 564],
+              backgroundColor: "rgba(54, 162, 235, 0.2)",
+              borderColor: "rgba(54, 162, 235, 1)",
+              borderWidth: 20,
+              barThickness: 30, // number (pixels) or 'flex'
+              maxBarThickness: 50, // number (pixels)
             },
           ],
         }}
@@ -123,39 +109,12 @@ export const HorizontalBarChart: React.FC<ChartProps> = (props: ChartProps) => {
           scales: {
             xAxes: [
               {
-                display: true,
-                gridLines: {
-                  display: false,
-                },
-                labels: {
-                  show: true,
-                },
+                stacked: true,
               },
             ],
             yAxes: [
               {
-                type: "linear",
-                display: true,
-                position: "left",
-                id: "y-axis-1",
-                gridLines: {
-                  display: false,
-                },
-                labels: {
-                  show: true,
-                },
-              },
-              {
-                type: "linear",
-                display: true,
-                position: "right",
-                id: "y-axis-2",
-                gridLines: {
-                  display: false,
-                },
-                labels: {
-                  show: true,
-                },
+                stacked: true,
               },
             ],
           },
@@ -165,14 +124,6 @@ export const HorizontalBarChart: React.FC<ChartProps> = (props: ChartProps) => {
             },
           },
         }}
-        // plugins={[
-        //   {
-        //     afterDraw: (chartInstance, easing) => {
-        //       const ctx = chartInstance.chart.ctx;
-        //       ctx.fillText("This text drawn by a plugin", 100, 100);
-        //     },
-        //   },
-        // ]}
       />
     </div>
   );

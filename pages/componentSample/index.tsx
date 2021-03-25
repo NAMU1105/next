@@ -15,8 +15,10 @@ import { classNames } from "../../utils/utils";
 import { Table, TH, TR, TD } from "../../components/table/table";
 import { TheadWrapper, TbodyWrapper } from "../../components/table/table";
 import { BarChart, HorizontalBarChart } from "../../components/chart/barchart";
+import { MixedChart } from "../../components/chart/mixed";
 import { PieChart } from "../../components/chart/piechart";
 import { DonutChart } from "../../components/chart/donut";
+import { Bar } from "react-chartjs-2";
 
 type InputWrapperType = {
   border?: string;
@@ -63,6 +65,7 @@ const Index = (props) => {
       <PieChart />
       <DonutChart />
       <HorizontalBarChart />
+      <MixedChart />
 
       {/* Table 1 */}
       <Table>
