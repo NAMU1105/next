@@ -12,3 +12,11 @@ interface WithChildren {
   // * ReactPortal | boolean | null | undefined ) 로 정의되어 있습니다.
   children?: React.ReactNode | React.FC | ReactChildren;
 }
+
+interface ChartProps {
+  id?: string;
+  width?: number;
+  height?: number;
+  data?: Array<number>;
+  responsiveWidth?: number;
+}
