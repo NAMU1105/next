@@ -21,6 +21,7 @@ const GET_USER = gql`
       firstName
       lastName
       email
+      role
     }
   }
 `;
@@ -34,7 +35,12 @@ const UserDetail = ({ loadedUser }) => {
   if (!loadedUser) return <p>Loading...</p>;
 
   if (loadedUser.userByID) {
-    return <p>User name: {loadedUser.userByID.firstName}</p>;
+    return (
+      <>
+        <p>User's first name: {loadedUser.userByID.firstName}</p>
+        <p>user's job: {loadedUser.userByID.role}</p>
+      </>
+    );
   } else {
     // console.log(loadedUser);
 

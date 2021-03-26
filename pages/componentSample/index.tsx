@@ -14,11 +14,12 @@ import Backdrop from "../../components/UI/backdrop";
 import { classNames } from "../../utils/utils";
 import { Table, TH, TR, TD } from "../../components/table/table";
 import { TheadWrapper, TbodyWrapper } from "../../components/table/table";
-import { BarChart, HorizontalBarChart } from "../../components/chart/barchart";
-import { MixedChart } from "../../components/chart/mixed";
-import { PieChart } from "../../components/chart/piechart";
-import { DonutChart } from "../../components/chart/donut";
-import { Bar } from "react-chartjs-2";
+// import { BarChart, HorizontalBarChart } from "../../components/chart/barchart";
+// import { MixedChart } from "../../components/chart/mixed";
+// import { PieChart } from "../../components/chart/piechart";
+// import { DonutChart } from "../../components/chart/donut";
+// import { BubbleChart } from "../../components/chart/bubble";
+import Charts from "../../components/UI/chart";
 
 type InputWrapperType = {
   border?: string;
@@ -50,6 +51,131 @@ const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
   }
 `;
 
+const data = {
+  labels: ["a", "b", "c"],
+  datasets: [
+    {
+      label: "Food",
+      data: [12, 19, 9],
+      backgroundColor: "rgba(255, 99, 132, 0.2)",
+      borderColor: "#694b51",
+      borderWidth: 1,
+    },
+  ],
+};
+
+const dataBubble = {
+  labels: ["a", "b", "c"],
+  datasets: [
+    {
+      label: "Food",
+      data: [
+        { x: 10, y: 20, r: 5 },
+        { x: 100, y: 200, r: 5 },
+        { x: 400, y: 250, r: 5 },
+        { x: 700, y: 570, r: 20 },
+      ],
+      backgroundColor: "rgba(255, 99, 132, 0.2)",
+      borderColor: "#694b51",
+      borderWidth: 1,
+    },
+  ],
+};
+
+const options = {
+  maintainAspectRatio: true,
+  scales: {
+    xAxes: [
+      {
+        stacked: true,
+      },
+    ],
+    yAxes: [
+      {
+        stacked: true,
+      },
+    ],
+  },
+  legend: {
+    labels: {
+      fontSize: 40,
+    },
+  },
+  tooltips: {
+    enabled: false,
+  },
+};
+
+const data2 = {
+  labels: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
+  datasets: [
+    {
+      label: "Sales",
+      type: "line",
+      data: [51, 65, 40, 49, 60, 37, 40, 51, 65, 40, 49],
+      fill: false,
+      borderColor: "#EC932F",
+      backgroundColor: "#EC932F",
+      pointBorderColor: "#EC932F",
+      pointBackgroundColor: "#EC932F",
+      pointHoverBackgroundColor: "#EC932F",
+      pointHoverBorderColor: "#EC932F",
+      // yAxisID: "y-axis-2",
+    },
+    {
+      type: "bubble",
+      label: "bubble",
+      fill: true,
+      lineTension: 0.1,
+      backgroundColor: "#cc6060",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: "butt",
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: "miter",
+      pointBorderColor: "#020c0c",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 5,
+      pointHoverBackgroundColor: "#8c1ca8",
+      pointHoverBorderColor: "#291212",
+      pointHoverBorderWidth: 2,
+      pointRadius: 1,
+      pointHitRadius: 10,
+      data: [
+        { x: 10, y: 20, r: 5 },
+        { x: 100, y: 200, r: 5 },
+        { x: 400, y: 250, r: 5 },
+        { x: 700, y: 570, r: 20 },
+      ],
+    },
+    {
+      type: "bar",
+      label: "Visitor",
+      data: [200, 185, 590, 621, 250, 400, 95, 185, 590, 621, 250, 100],
+      fill: false,
+      backgroundColor: "#71B37C",
+      borderColor: "#71B37C",
+      hoverBackgroundColor: "#1a291c",
+      hoverBorderColor: "#71B37C",
+      // yAxisID: "y-axis-1",
+    },
+  ],
+};
+
 const Index = (props) => {
   const testFunction = () => {
     console.log("test");
@@ -62,10 +188,18 @@ const Index = (props) => {
   return (
     <section className="w-full">
       {/* charts */}
-      <PieChart />
+      {/* <PieChart />
       <DonutChart />
       <HorizontalBarChart />
       <MixedChart />
+      <BubbleChart /> */}
+      <Charts chartType="bar" data={data} options={options} />
+      <Charts chartType="horizontalBar" data={data} />
+      <Charts chartType="bubble" data={dataBubble} />
+      <Charts chartType="doughnut" data={data} />
+      <Charts chartType="pie" data={data} />
+      <Charts chartType="line" data={data} />
+      <Charts chartType="mixed" data={data2} />
 
       {/* Table 1 */}
       <Table>

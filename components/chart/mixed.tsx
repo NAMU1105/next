@@ -24,24 +24,12 @@ export const MixedChart: React.FC<ChartProps> = (props: ChartProps) => {
     <div>
       <Bar
         data={{
-          //   labels: [...DUMMY_CHART_DATA.labels],
-
           datasets: [
-            {
-              type: "bar",
-              label: "Visitor",
-              data: [200, 185, 590, 621, 250, 400, 95],
-              fill: false,
-              backgroundColor: "#71B37C",
-              borderColor: "#71B37C",
-              hoverBackgroundColor: "#71B37C",
-              hoverBorderColor: "#71B37C",
-              yAxisID: "y-axis-1",
-            },
+            // Linear data
             {
               label: "Sales",
               type: "line",
-              data: [51, 65, 40, 49, 60, 37, 40],
+              data: [51, 65, 40, 49, 60, 37, 40, 51, 65, 40, 49],
               fill: false,
               borderColor: "#EC932F",
               backgroundColor: "#EC932F",
@@ -51,12 +39,53 @@ export const MixedChart: React.FC<ChartProps> = (props: ChartProps) => {
               pointHoverBorderColor: "#EC932F",
               yAxisID: "y-axis-2",
             },
+            // Bubble data
+            {
+              type: "bubble",
+              label: "bubble",
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "#cc6060",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: "butt",
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: "miter",
+              pointBorderColor: "#020c0c",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "#8c1ca8",
+              pointHoverBorderColor: "#291212",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data: [
+                { x: 10, y: 20, r: 5 },
+                { x: 100, y: 200, r: 5 },
+                { x: 400, y: 250, r: 5 },
+                { x: 700, y: 570, r: 20 },
+              ],
+            },
+            // Bar data
+            {
+              type: "bar",
+              label: "Visitor",
+              data: [200, 185, 590, 621, 250, 400, 95, 185, 590, 621, 250, 100],
+              fill: false,
+              backgroundColor: "#71B37C",
+              borderColor: "#71B37C",
+              hoverBackgroundColor: "#71B37C",
+              hoverBorderColor: "#71B37C",
+              yAxisID: "y-axis-1",
+            },
           ],
         }}
         height={300}
         width={300}
         options={{
           maintainAspectRatio: false,
+
           scales: {
             xAxes: [
               {
@@ -65,15 +94,7 @@ export const MixedChart: React.FC<ChartProps> = (props: ChartProps) => {
                   display: false,
                 },
 
-                labels: [
-                  "January",
-                  "February",
-                  "March",
-                  "April",
-                  "May",
-                  "June",
-                  "July",
-                ],
+                labels: [...DUMMY_CHART_DATA.labels],
               },
             ],
             yAxes: [
@@ -107,6 +128,11 @@ export const MixedChart: React.FC<ChartProps> = (props: ChartProps) => {
             labels: {
               fontSize: 16,
             },
+            position: "left",
+            // display: false,
+          },
+          tooltips: {
+            enabled: false,
           },
         }}
       />

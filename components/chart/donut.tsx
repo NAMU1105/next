@@ -22,6 +22,10 @@ const DUMMY_CHART_DATA = {
   ],
 };
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export const DonutChart: React.FC<ChartProps> = (props: ChartProps) => {
   // const { width, responsiveWidth, height, responsiveHight } = props;
 

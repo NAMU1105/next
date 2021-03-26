@@ -1,5 +1,5 @@
 import React from "react";
-import { Bar, HorizontalBar, Pie, defaults } from "react-chartjs-2";
+import { Bar, HorizontalBar } from "react-chartjs-2";
 
 // defaults.global.tooltips.enabled = false;
 // defaults.global.legend.position = "bottom";
