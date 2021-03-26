@@ -12,6 +12,9 @@ import { LayoutContext } from "../context/layout-context";
 import { useAuth } from "../utils/hooks/auth-hooks";
 import { useLayout } from "../utils/hooks/layout-hooks";
 
+// 다국어 지원 파일
+import { appWithTranslation } from "next-i18next";
+
 function MyApp({ Component, pageProps }) {
   const apolloClient = useApollo(pageProps.initialApolloState);
 
@@ -56,4 +59,5 @@ function MyApp({ Component, pageProps }) {
   );
 }
 
-export default MyApp;
+// export default MyApp;
+export default appWithTranslation(MyApp);

@@ -5,15 +5,27 @@
 // import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
 // import { GET_PEOPLE, GET_PEOPLE_PAGENATED } from "../lib/queries/users";
 // let isMonted = false;
+import Link from "next/link";
+import { useRouter } from "next/router";
+
+import { useTranslation } from "next-i18next";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 const Home = () => {
   // const { data, error, loading } = useQuery(GET_PEOPLE);
   // console.log(data);
+  const router = useRouter();
+  const { t } = useTranslation("common");
 
   return (
     <>
-      {/* <h1>{data.users[0].name}</h1> */}
       <h1>index page</h1>
+      <Link href="/" locale={router.locale === "en" ? "ko" : "en"}>
+        <button>{t("h1")}</button>
+      </Link>
+      <Link href="/auth">
+        <button type="button">{t("title")}</button>
+      </Link>
     </>
   );
 };
@@ -34,5 +46,9 @@ const Home = () => {
 //     },
 //   };
 // }
-
+export const getStaticProps = async ({ locale = "ko" }) => ({
+  props: {
+    ...(await serverSideTranslations(locale, ["common"])),
+  },
+});
 export default Home;

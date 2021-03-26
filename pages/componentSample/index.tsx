@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import tw from "twin.macro";
+import { classNames } from "../../utils/utils";
 
 import { Avatar, AvatarGroup } from "../../components/UI/avatar";
 import { Alert } from "../../components/UI/alert";
@@ -11,14 +12,8 @@ import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
 import Backdrop from "../../components/UI/backdrop";
 
-import { classNames } from "../../utils/utils";
 import { Table, TH, TR, TD } from "../../components/table/table";
 import { TheadWrapper, TbodyWrapper } from "../../components/table/table";
-// import { BarChart, HorizontalBarChart } from "../../components/chart/barchart";
-// import { MixedChart } from "../../components/chart/mixed";
-// import { PieChart } from "../../components/chart/piechart";
-// import { DonutChart } from "../../components/chart/donut";
-// import { BubbleChart } from "../../components/chart/bubble";
 import Charts from "../../components/UI/chart";
 
 type InputWrapperType = {
@@ -176,6 +171,9 @@ const data2 = {
   ],
 };
 
+///////////////////////////////////////////
+//****************************************/
+///////////////////////////////////////////
 const Index = (props) => {
   const testFunction = () => {
     console.log("test");
