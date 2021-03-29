@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import Button from "../components/form/button";
 
 const Home = () => {
   // const { data, error, loading } = useQuery(GET_PEOPLE);
@@ -24,7 +25,13 @@ const Home = () => {
         <button>{t("h1")}</button>
       </Link>
       <Link href="/auth">
-        <button type="button">{t("title")}</button>
+        <button
+          type="button"
+          className="bg-indigo-500 rounded shadow-lg p-2 text-white block"
+        >
+          {t("title")}
+        </button>
+        {/* <Button>{t("title")}</Button> */}
       </Link>
     </>
   );

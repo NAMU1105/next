@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, ReactChildren } from "react";
 import { classNames } from "../../utils/utils";
 // import styled, { css } from "styled-components";
 // import tw from "twin.macro";
@@ -57,7 +57,7 @@ interface ButtonProps {
   disabled?: "true" | "false";
   textTransform?: "uppercase" | "capitalize" | "lowercase";
   href?: string;
-  children?: ReactNode;
+  children?: React.ReactNode | React.FC | ReactChildren | string;
   onClick?: () => void;
 }
 
