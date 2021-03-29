@@ -63,7 +63,7 @@ const UserDetail = ({ loadedUser }) => {
   if (loadedUser.userByID) {
     // if (mounted) {
     // Client side data fetching with SWR
-    // console.log("env: ", process.env.GRAPHQL_END_POINT);
+    console.log("env: ", process.env.GRAPHQL_END_POINT);
 
     // const { data, error } = useSWR(
     //   GET_ALL_USERS,
@@ -76,25 +76,6 @@ const UserDetail = ({ loadedUser }) => {
       { refreshInterval: 1000 }
     );
     data && !error && console.log("useSWR: ", data.userByID.profilePicture);
-
-    // const { data, error } = useSWR(GET_ALL_USERS, fetcher);
-    // const data = await fetcher(GET_USERS_ID2);
-    // const { data, error } = useSWR(
-    //   `{
-    //     users{
-    //       id
-    //       firstName
-    //     }
-    //   }`,
-    //   fetcher
-    // );
-    // }
-
-    // const { data: poke, error: pokeError } = useSWR(
-    //   [GET_USER_PROFILE, variables],
-    //   fetcher
-    // );
-    // console.log("img: ", poke);
 
     return (
       <>
