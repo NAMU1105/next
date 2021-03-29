@@ -18,6 +18,8 @@ const Home = () => {
   const router = useRouter();
   const { t } = useTranslation("common");
 
+  const buttonText = t("title");
+
   return (
     <>
       <h1>index page</h1>

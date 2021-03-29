@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { initializeApollo } from "../../lib/apolloClient";
-import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
+// import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import {
   GET_ALL_USER_COUNT_AND_USER_PAGENATED,
   GET_USERS,
@@ -134,26 +134,5 @@ export const getServerSideProps = async (ctx) => {
     props: data,
   };
 };
-// export const getStaticProps = async () => {
-//   const apolloClient = initializeApollo();
-
-//   const { data, error } = await apolloClient.query({
-//     query: GET_PEOPLE,
-//   });
-
-//   //   invalid한 url일 경우 404페이지 띄움
-//   if (!data) {
-//     return { notFound: true };
-//   }
-
-//   // console.log("data: ", data);
-
-//   return {
-//     props: {
-//       loadedUser: data,
-//     },
-//     revalidate: 1, // 단위: 초
-//   };
-// };
 
 export default Index;
