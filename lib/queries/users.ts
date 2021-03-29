@@ -66,16 +66,6 @@ export const GET_USER_BY_ID = gql`
     }
   }
 `;
-export const GET_USER_PROFILE = gql`
-  query userByID($id: String!) {
-    userByID(id: $id) {
-      firstName
-      lastName
-      email
-      role
-    }
-  }
-`;
 
 /////////////////////////////////////////
 export const GET_ALL_USERS = `query users{
@@ -103,7 +93,14 @@ export const GET_USER_BY_ID2 = `
     }
   }
 `;
+export const GET_USER_PROFILE = `
+  query userByID($id: String!) {
+    userByID(id: $id) {
+      profilePicture
+    }
+  }
+`;
 
 // TODO: 위의 값들을 enum에 넣어놓고 param에 따라 gql붙여서 리턴할지 말지 결정해주는 함수를 만들자
-//
+// -> ㄴㄴ 하나로 통일
 // const

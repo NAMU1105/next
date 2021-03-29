@@ -27,8 +27,8 @@ let mounted = false;
 const UserDetail = ({ loadedUser }) => {
   const router = useRouter();
   const id = router.query.id;
-  const apolloClient = initializeApollo();
-  const variables = { code: 14 };
+  // const apolloClient = initializeApollo();
+  // const variables = { code: 14 };
 
   // const { data: picture, error } = useSWR(
   //   "https://picsum.photos/v2/list?page=2&limit=1",
@@ -43,19 +43,18 @@ const UserDetail = ({ loadedUser }) => {
   //   console.log(router.pathname);
   //   console.log(router.query);
   //   console.log(router.query.id);
-  const getData = async () => {
-    const { data, error } = await apolloClient.query({
-      query: GET_USER_BY_ID,
-      variables: {
-        id,
-      },
-    });
-
-    console.log("client side: ", data);
-  };
+  // const getData = async () => {
+  //   const { data, error } = await apolloClient.query({
+  //     query: GET_USER_BY_ID,
+  //     variables: {
+  //       id,
+  //     },
+  //   });
+  //   console.log("client side: ", data);
+  // };
 
   useEffect(() => {
-    getData();
+    // getData();
     mounted = true;
   }, []);
 
@@ -66,11 +65,18 @@ const UserDetail = ({ loadedUser }) => {
     // Client side data fetching with SWR
     // console.log("env: ", process.env.GRAPHQL_END_POINT);
 
+    // const { data, error } = useSWR(
+    //   GET_ALL_USERS,
+    //   (query) => request(process.env.GRAPHQL_END_POINT, query)
+    // request(process.env.REACT_APP_GRAPHQL_END_POINT, query)
+    // );
     const { data, error } = useSWR(
-      GET_ALL_USERS,
-      (query) => request(process.env.GRAPHQL_END_POINT, query)
-      // request(process.env.REACT_APP_GRAPHQL_END_POINT, query)
+      [GET_USER_PROFILE, id],
+      (query, id) => request(process.env.GRAPHQL_END_POINT, query, { id }),
+      { refreshInterval: 1000 }
     );
+    data && !error && console.log("useSWR: ", data.userByID.profilePicture);
+
     // const { data, error } = useSWR(GET_ALL_USERS, fetcher);
     // const data = await fetcher(GET_USERS_ID2);
     // const { data, error } = useSWR(
@@ -82,7 +88,6 @@ const UserDetail = ({ loadedUser }) => {
     //   }`,
     //   fetcher
     // );
-    console.log("useSWR: ", data);
     // }
 
     // const { data: poke, error: pokeError } = useSWR(
@@ -95,7 +100,9 @@ const UserDetail = ({ loadedUser }) => {
       <>
         <p>User's first name: {loadedUser.userByID.firstName}</p>
         <p>user's job: {loadedUser.userByID.role}</p>
-        {/* <img src={picture[0].download_url} alt="profile image" /> */}
+        {data && !error && (
+          <img src={data.userByID.profilePicture} alt="profile image" />
+        )}
       </>
     );
   } else {
