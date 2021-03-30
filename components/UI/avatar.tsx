@@ -68,9 +68,9 @@ export const Avatar: React.FC<AvatarProps> = (props: AvatarProps) => {
 
   return (
     <div
-      className={classNames`relative ${SIZE_VARIANT_MAPS[props.size]} ${
-        props.customstyle
-      }`}
+      className={classNames`relative cursor-pointer ${
+        SIZE_VARIANT_MAPS[props.size]
+      } ${props.customstyle}`}
     >
       {props.extra ? (
         <span className="block font-bold text-xl pt-1 w-full rounded-full h-inherit bg-gray-500 text-white">

@@ -12,7 +12,7 @@ import { LayoutContext } from "../context/layout-context";
 import { useAuth } from "../utils/hooks/auth-hooks";
 import { useLayout } from "../utils/hooks/layout-hooks";
 
-// 다국어 지원 파일
+// translation
 import { appWithTranslation } from "next-i18next";
 
 function MyApp({ Component, pageProps }) {

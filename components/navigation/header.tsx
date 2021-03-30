@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 
@@ -6,81 +7,121 @@ import { LayoutContext } from "../../context/layout-context";
 import { classNames } from "../../utils/utils";
 import { Input } from "../form/input";
 import { Avatar } from "../UI/avatar";
+import DropDown from "../UI/dropdown";
 
-interface IF {}
 type Values = {
   searchBar: string;
 };
+
+// 컴포넌트가 마운트 됐는지 여부
 let isMounted = false;
+
+// 드롭다운 메뉴들
+const SETTING_DROPDOWN_MENUS = [
+  { to: "/users", label: "users", className: null, onclick: null },
+  // { to: "/products", label: "products", className: null, onclick: null },
+  // { to: "/settings", label: "settings", className: null, onclick: null },
+  // { to: null, label: "log out", className: "border-t-2", onclick: logout },
+];
 
 const HeaderMenuItems = (props) => {
   return (
     <>
       {/* 1. alarm */}
-      <button className={`${!props.sub && `hidden md:inline-block`} mr-2 `}>
-        <svg
-          className="w-7 animate-wiggle"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div className="group ">
+        <button
+          className={`${
+            !props.sub && `hidden md:block`
+          } mr-2 focus:outline-none  transform hover:scale-125 `}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
-          />
-        </svg>
-      </button>
+          <svg
+            className="w-7 animate-wiggle"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+            />
+          </svg>
+        </button>
+        <DropDown menus={SETTING_DROPDOWN_MENUS} />
+      </div>
       {/* 2. language setting */}
-      <button className={`${!props.sub && `hidden md:inline-block`} mr-2 `}>
-        <svg
-          className="w-7"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div className="group">
+        <button
+          className={` ${
+            !props.sub && `hidden md:block`
+          } mr-2 focus:outline-none  transform hover:scale-125`}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
-          />
-        </svg>
-      </button>
+          <svg
+            className="w-7"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+            />
+          </svg>
+        </button>
+        <DropDown menus={SETTING_DROPDOWN_MENUS} />
+      </div>
       {/* 3. setting */}
-      <button className={`${!props.sub && `hidden md:inline-block`} mr-2 `}>
-        <svg
-          className="w-7 animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
+      <div className="group">
+        <button
+          className={` ${
+            !props.sub && `hidden md:block`
+          } mr-2 focus:outline-none transform hover:scale-125`}
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      </button>
-      <Avatar
-        customstyle={`${!props.sub && `hidden md:inline-block`} mr-2 `}
-        src="https://pbs.twimg.com/profile_images/1354357825355411464/kJZxEWo5_400x400.jpg"
-        // badge="active"
-      />
+          <svg
+            className="w-7 animate-spin"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+          </svg>
+        </button>
+        <DropDown menus={SETTING_DROPDOWN_MENUS} />
+      </div>
+      {/* 4. profile */}
+      <div className="group">
+        <Avatar
+          customstyle={`${!props.sub && `hidden md:inline-block`} mr-2 `}
+          src="https://pbs.twimg.com/profile_images/1354357825355411464/kJZxEWo5_400x400.jpg"
+          // badge="active"
+        />
+        <DropDown menus={SETTING_DROPDOWN_MENUS} />
+      </div>
     </>
   );
 };
+
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+interface IF {}
 
 const Header: React.FC<IF> = (props: IF) => {
   const layoutContext = useContext(LayoutContext);
@@ -102,6 +143,7 @@ const Header: React.FC<IF> = (props: IF) => {
   }, []);
 
   const changeNavState = () => {
+    // if (window.innerWidth <= parseInt(process.env.md)) {
     if (window.innerWidth <= 768) {
       layoutContext.SetToggleStateNavHandler(false);
     } else {
@@ -144,7 +186,7 @@ const Header: React.FC<IF> = (props: IF) => {
       >
         <div className="w-sidenav min-w-sidenav px-4 flex items-center">
           {/* 사이드네비게이션 토글 버튼 */}
-          <button className="mr-2" onClick={layoutContext.ToggleNavHandler}>
+          <button className="mr-2 " onClick={layoutContext.ToggleNavHandler}>
             <svg
               className="w-5"
               xmlns="http://www.w3.org/2000/svg"
@@ -160,12 +202,18 @@ const Header: React.FC<IF> = (props: IF) => {
               />
             </svg>
           </button>
-          <Image
-            src="/image/logo/Horizontal_Light.png"
-            alt="site logo"
-            width={140}
-            height={20}
-          />
+          {/* LOGO */}
+          <Link href="/">
+            <a>
+              <Image
+                className="cursor-pointer"
+                src="/image/logo/Horizontal_Light.png"
+                alt="site logo"
+                width={140}
+                height={20}
+              />
+            </a>
+          </Link>
         </div>
 
         {/* 메뉴 */}
@@ -206,10 +254,10 @@ const Header: React.FC<IF> = (props: IF) => {
           </Formik>
 
           {/* 기타 메뉴 */}
-          <div className="flex">
+          <div className="flex items-center">
             <HeaderMenuItems />
             {/* 반응형 메뉴들 */}
-            <button className="focus:outline-none  md:hidden">
+            <button className="focus:outline-none  md:hidden ">
               <svg
                 className="w-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -226,7 +274,11 @@ const Header: React.FC<IF> = (props: IF) => {
                 />
               </svg>
             </button>
-            <button id="headerMenuBtn" onClick={toggleSubHeaderHandler}>
+            <button
+              className="focus:outline-none"
+              id="headerMenuBtn"
+              onClick={toggleSubHeaderHandler}
+            >
               <svg
                 className="w-6 md:hidden"
                 xmlns="http://www.w3.org/2000/svg"
@@ -248,7 +300,7 @@ const Header: React.FC<IF> = (props: IF) => {
       {/* 반응형 메뉴들 */}
       {isSubHeaderOpen && (
         <div
-          className={classNames` w-full fixed  pr-4 top-header h-header flex items-center justify-end shadow-sm
+          className={classNames`focus:outline-none w-full fixed  pr-4 top-header h-header flex items-center justify-end shadow-sm
         bg-gray-100 md:hidden
         `}
         >

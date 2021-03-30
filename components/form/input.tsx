@@ -77,6 +77,11 @@ const RING_WIDTH_VARIANT_MAPS = {
   md: "ring-4",
   lg: "ring-8",
 };
+const BORDER_WIDTH_VARIANT_MAPS = {
+  sm: "border-2",
+  md: "border-4",
+  lg: "border-8",
+};
 
 const DISABLED_VARIANT_MAPS = {
   text: "!bg-gray-600 cursor-default text-gray-800",
@@ -117,6 +122,7 @@ interface InputProps {
   rounded?: "sm" | "md" | "lg" | "full";
   textsize?: "sm" | "base" | "lg" | "xl";
   customstyle?: string;
+  borderwidth?: "sm" | "base" | "lg" | "xl";
   // borderStyle?:"rectangle"|"round-all"|"round-"
 }
 
@@ -125,13 +131,19 @@ interface InputProps {
 ///////////////////////
 
 /* styled components starts */
+type InputWrapperType = {
+  borderwidth?: string;
+  rounded?: string;
+};
 
-const InputTextWrapper = styled.div.attrs({
-  className:
-    "focus-within:border-red-700  px-4 py-2 border-2 border-red-500 rounded relative ml-16",
-})`
+const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
+  className: classNames`focus-within:border-red-700 px-4 py-2 border-red-500 relative ml-16
+   ${ROUND_VARIANT_MAPS[props.rounded]}
+   ${BORDER_WIDTH_VARIANT_MAPS[props.borderwidth]}
+   `,
+}))<InputWrapperType>`
   > input {
-    ${tw`appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white`}
+    ${tw`appearance-none border-2 border-transparent rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white  `}
     &:focus + label {
       margin: -1rem 0.3rem;
       background-color: white;
@@ -154,11 +166,19 @@ const InputTextWrapper = styled.div.attrs({
 /* styled components ends */
 interface InputTextProps extends InputProps {
   type: "email" | "text" | "password";
+  inputtype?:
+    | "normal"
+    | "textarea"
+    | "searchBar"
+    | "outlined"
+    | "outlinedWithAnim"
+    | "dashed"
+    | "filled";
   //multiline일 경우 textarea
   multiLine?: boolean;
   // search input box
   searchbar?: "true" | "false";
-  placeholder: string;
+  placeholder?: string;
   autoComplete?: "on" | "off";
 }
 
@@ -170,121 +190,176 @@ export const Input: React.FC<InputTextProps> = (props) => {
     name: props.name,
   });
 
-  // switch (props.) {
-  //   case value:
-
-  //     break;
-
-  //   default:
-  //     break;
-  // }
-
-  // let element;
-  // Textarea일 경우
-  if (props.multiLine) {
-    return (
-      // <div className={`w-full`}>
-      <textarea
-        className={classNames`form-input border border-transparent focus:border-transparent	 rounded-md 
-        ${COLOR_VARIANT_MAPS[props.color]}
-        ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
-        ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
-        ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
-        ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
-        ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
-        ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
-        ${ROUND_VARIANT_MAPS[props.rounded]}
-        ${props.customstyle && props.customstyle}
-        ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
-
-        `}
-        {...field}
-        {...props}
-      ></textarea>
-      // </div>
-    );
-
-    // 서치바 인풋일 경우
-  } else if (props.searchbar === "true") {
-    return (
-      <div
-        className={classNames`w-full ${props.customstyle && props.customstyle}`}
-      >
-        <div className="flex items-center border border-gray-200 rounded-2xl px-4">
-          <button className="focus:outline-none transform hover:scale-125">
-            <svg
-              className="w-7"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </button>
+  switch (props.inputtype) {
+    //1. 일반 인풋일 경우
+    case "normal":
+      return (
+        // 일반 인풋일 경우
+        // <div className={`w-full`}>
+        <div
+          className={classNames`w-full ${
+            props.customstyle && props.customstyle
+          }`}
+        >
           <input
             className={
               // props.disabled              ? `${DISALBED_INPUT}`              :
               classNames`form-input border border-transparent focus:border-transparent
-            ${COLOR_VARIANT_MAPS[props.color]}
-            ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
-            ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
-            ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
-            ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
-            ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
-            ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
-            ${ROUND_VARIANT_MAPS[props.rounded]}
-            // ${props.customstyle && props.customstyle}
-            ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
-            `
+              ${COLOR_VARIANT_MAPS[props.color]}
+              ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
+              ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
+              ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
+              ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
+              ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
+              ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
+              ${ROUND_VARIANT_MAPS[props.rounded]}
+              // ${props.customstyle && props.customstyle}
+              ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
+              `
             }
             {...field}
             {...props}
           />
+          {error && touched && <div className={``}>{error}</div>}
         </div>
-        {error && touched && <div className={``}>{error}</div>}
-      </div>
-    );
-  } else {
-    return (
-      // 일반 인풋일 경우
-      // <div className={`w-full`}>
-      <div
-        className={classNames`w-full ${props.customstyle && props.customstyle}`}
-      >
-        <input
-          className={
-            // props.disabled              ? `${DISALBED_INPUT}`              :
-            classNames`form-input border border-transparent focus:border-transparent
-            ${COLOR_VARIANT_MAPS[props.color]}
-            ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
-            ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
-            ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
-            ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
-            ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
-            ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
-            ${ROUND_VARIANT_MAPS[props.rounded]}
-            // ${props.customstyle && props.customstyle}
-            ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
-            `
-          }
+      );
+
+    // 2. textArea일 경우
+    case "textarea":
+      return (
+        // <div className={`w-full`}>
+        <textarea
+          className={classNames`form-input border border-transparent focus:border-transparent	rounded-md 
+          ${COLOR_VARIANT_MAPS[props.color]}
+          ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
+          ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
+          ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
+          ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
+          ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
+          ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
+          ${ROUND_VARIANT_MAPS[props.rounded]}
+          ${props.customstyle && props.customstyle}
+          ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
+  
+          `}
           {...field}
           {...props}
-        />
-        {error && touched && <div className={``}>{error}</div>}
-      </div>
-    );
+        ></textarea>
+        // </div>
+      );
+    // 3. 서치바일 경우
+    case "searchBar":
+      return (
+        <div
+          className={classNames`w-full ${
+            props.customstyle && props.customstyle
+          }`}
+        >
+          <div className="flex items-center border border-gray-200 rounded-2xl px-4">
+            <button className="focus:outline-none transform hover:scale-125">
+              <svg
+                className="w-7"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </button>
+            <input
+              className={
+                // props.disabled              ? `${DISALBED_INPUT}`              :
+                classNames`form-input border border-transparent focus:border-transparent
+              ${COLOR_VARIANT_MAPS[props.color]}
+              ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
+              ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
+              ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
+              ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
+              ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
+              ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
+              ${ROUND_VARIANT_MAPS[props.rounded]}
+              // ${props.customstyle && props.customstyle}
+              ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
+              `
+              }
+              {...field}
+              {...props}
+            />
+          </div>
+          {error && touched && <div className={``}>{error}</div>}
+        </div>
+      );
+    // 4. 아웃라인 버전일 경우(애니메이션 효과 없이)
+    //TODO: 4, 5번도 색깔, 보더 등 바꿀 수 있게 하기
+    case "outlined":
+      return (
+        <div className="px-4 py-2 border-2 border-gray-400 rounded relative">
+          <label className="absolute -my-6 -mx-2 bg-white px-2 text-gray-400">
+            {props.label}
+          </label>
+          <input
+            type={props.type}
+            className="appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white"
+            placeholder="Max Mustermann"
+          />
+        </div>
+      );
+    // 5. 아웃라인 버전일 경우(애니메이션 효과 포함)
+    case "outlinedWithAnim":
+      return (
+        <InputTextWrapper
+          borderwidth={props.borderwidth ? props.borderwidth : "sm"}
+          rounded={props.rounded ? props.rounded : "lg"}
+        >
+          <input type={props.type} />
+          <label>{props.label}</label>
+        </InputTextWrapper>
+      );
+
+    default:
+      return (
+        // 일반 인풋일 경우
+        // <div className={`w-full`}>
+        <div
+          className={classNames`w-full ${
+            props.customstyle && props.customstyle
+          }`}
+        >
+          <input
+            className={
+              // props.disabled              ? `${DISALBED_INPUT}`              :
+              classNames`form-input border border-transparent focus:border-transparent
+              ${COLOR_VARIANT_MAPS[props.color]}
+              ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
+              ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
+              ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
+              ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
+              ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
+              ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
+              ${ROUND_VARIANT_MAPS[props.rounded]}
+              // ${props.customstyle && props.customstyle}
+              ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
+              `
+            }
+            {...field}
+            {...props}
+          />
+          {error && touched && <div className={``}>{error}</div>}
+        </div>
+      );
   }
 };
 
 Input.defaultProps = {
   ringcolor: "gray",
   rounded: "lg",
+  inputtype: "normal",
 };
 
 ////****************************** */

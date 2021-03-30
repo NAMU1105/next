@@ -235,6 +235,7 @@ module.exports = {
       scale: ["active", "group-hover", "group-focus", "hover"],
       borderRadius: ["checked", "label-checked"],
       boxShadow: ["checked", "label-checked"],
+      display: ["group-focus", "group-hover"],
     },
   },
   plugins: [

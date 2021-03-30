@@ -2,6 +2,10 @@ import Head from "next/head";
 import React, { ReactNode, useContext, useState, useEffect } from "react";
 import Sidebar from "../navigation/sidebar";
 import Header from "../navigation/header";
+// 다국어 지원 파일
+// import { appWithTranslation } from "next-i18next";
+import { I18nextProvider } from "react-i18next";
+import i18n from "../../i18n";
 
 import { LayoutContext } from "../../context/layout-context";
 
@@ -14,6 +18,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
 
   return (
     <>
+      {/* <I18nextProvider i18n={i18n}> */}
       <Head>
         <meta
           httpEquiv="Content-Security-Policy"
@@ -40,6 +45,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
         </div>
         {/* <Footer /> */}
       </div>
+      {/* </I18nextProvider> */}
     </>
   );
 };

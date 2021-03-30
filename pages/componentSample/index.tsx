@@ -16,36 +16,6 @@ import { Table, TH, TR, TD } from "../../components/table/table";
 import { TheadWrapper, TbodyWrapper } from "../../components/table/table";
 import Charts from "../../components/UI/chart";
 
-type InputWrapperType = {
-  border?: string;
-  rounded?: string;
-};
-
-const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
-  className: classNames`focus-within:border-red-700 px-4 py-2 border-red-500 relative ml-16 ${props.border} ${props.rounded}`,
-}))<InputWrapperType>`
-  > input {
-    ${tw`appearance-none border-2 border-transparent rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white  `}
-    &:focus + label {
-      margin: -1rem 0.3rem;
-      background-color: white;
-      font-size: 1rem;
-      color: rgba(185, 28, 28, 1);
-    }
-  }
-  > input + label {
-    position: absolute;
-    left: 0;
-    top: 0;
-    margin: 0.7rem 0.3rem;
-    padding: 0 0.3rem;
-    background-color: transparent;
-    color: red;
-    font-size: 1.2rem;
-    transition: all ease 0.2s;
-  }
-`;
-
 const data = {
   labels: ["a", "b", "c"],
   datasets: [
@@ -409,21 +379,19 @@ const Index = (props) => {
                 />
 
                 <div className="flex bg-white items-center justify-center w-full h-64">
-                  <div className="px-4 py-2 border-2 border-gray-400 rounded relative">
-                    <label className="absolute -my-6 -mx-2 bg-white px-2 text-gray-400">
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      className="appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white"
-                      placeholder="Max Mustermann"
-                    />
-                  </div>
-
-                  <InputTextWrapper border="border-2" rounded="rounded">
-                    <input type="text" />
-                    <label>Name</label>
-                  </InputTextWrapper>
+                  <Input
+                    inputtype="outlinedWithAnim"
+                    type="text"
+                    name="inputAnim"
+                    label="input with animation"
+                  />
+                  <Input
+                    inputtype="outlined"
+                    type="text"
+                    placeholder="your name"
+                    name="inputOutlined"
+                    label="input outlined"
+                  />
                 </div>
 
                 <Checkbox name="default" label="default" />

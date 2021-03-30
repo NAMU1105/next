@@ -101,6 +101,7 @@ export const GET_USER_PROFILE = `
   }
 `;
 
-// TODO: 위의 값들을 enum에 넣어놓고 param에 따라 gql붙여서 리턴할지 말지 결정해주는 함수를 만들자
-// -> ㄴㄴ 하나로 통일
-// const
+export const UploadUserProfileImg = `
+mutation uploadUserProfileImg($userId: Int!, $file: Upload!) {
+  updateUser(id: $userId, input: { img: $file })
+}`;

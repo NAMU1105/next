@@ -102,7 +102,7 @@ Button.defaultProps = {
   type: "button",
   color: "white",
   design: "contained",
-  size: "full",
+  size: "sm",
   disabled: "false",
   textTransform: "uppercase",
   bgColor: "primary",
