@@ -9,10 +9,11 @@ import { CSVLink } from "react-csv";
 // import i18next from "i18next";
 import { useTranslation } from "next-i18next";
 
-// import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
+import { gql, useQuery, useLazyQuery, useMutation } from "@apollo/client";
+
 import {
-  GET_ALL_USER_COUNT_AND_USER_PAGENATED,
   GET_USERS,
+  GET_ALL_USER_COUNT_AND_USER_PAGENATED,
   GET_USER_PAGENATED,
 } from "../../lib/queries/users";
 import Pagination from "../../components/navigation/pagination";
@@ -56,6 +57,11 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
     Math.ceil(props.userAllCount / USER_PER_PAGE)
   );
   const [checkItems, setCheckItems] = useState<Array<string | number>>([]);
+
+  // useEffect(() => {
+  // const { loading, error, data } = useQuery(GET_USERS);
+  // console.log("userQuery:", data);
+  // }, []);
 
   const setPageHandler = (param) => {
     // console.log("setPageHandler:", param);
@@ -224,6 +230,9 @@ export const Index: React.FC<USERS_PROPS> = (props: USERS_PROPS) => {
 };
 
 export const getServerSideProps = async (ctx) => {
+  // const { loading, error: errorTest, data: dataTest } = useQuery(GET_USERS);
+  // console.log("userQuery:", dataTest);
+
   const { data, error } = await apolloClient.query(
     {
       query: GET_ALL_USER_COUNT_AND_USER_PAGENATED,

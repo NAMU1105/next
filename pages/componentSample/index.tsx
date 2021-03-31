@@ -338,6 +338,7 @@ const Index = (props) => {
                   color="black"
                   fieldsize="auto"
                   bgcolor="danger"
+                  // $inputTest="test"
                   // ringcolor="black"
                   // ringwidth="sm"
                 />

@@ -7,7 +7,7 @@ interface BackdropProps {
 let isMonted = false;
 
 const Backdrop: React.FC<BackdropProps> = (props: BackdropProps) => {
-  const [showBackdrop, setShowBackdrop] = useState(false);
+  const [showBackdrop, setShowBackdrop] = useState<boolean>(false);
 
   useEffect(() => {
     if (!isMonted) isMonted = true;

@@ -24,6 +24,7 @@ export const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const link = errorLink.concat(requestLink);
+// const link = requestLink;
 
 function createApolloClient() {
   return new ApolloClient({

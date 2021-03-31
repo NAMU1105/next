@@ -245,7 +245,7 @@ const Header: React.FC<IF> = (props: IF) => {
                   label="search bar"
                   fieldsize="full"
                   ringcolor="transprent"
-                  searchbar="true"
+                  inputtype="searchBar"
                   autoComplete="off"
                   customstyle="hidden md:inline-block"
                 />

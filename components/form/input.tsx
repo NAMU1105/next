@@ -10,7 +10,7 @@ import { classNames } from "../../utils/utils";
 // 2. ringwidth같은 공통 적인 속성 따로 만든 다음에 상속하기
 
 // TODO: 디자인이 너무 많아지니 인풋 타입별로 파일 나눠서 관리하는 거 고려해보기
-
+// TODO: error div도 스타일드컴포넌트로 CSS만들어두기
 // //////////////////////////////////////////////////////////////
 ///////////////////////
 //// common props starts
@@ -163,6 +163,9 @@ const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
     transition: all ease 0.2s;
   }
 `;
+
+const ErrorDivWrapper = styled.div.attrs({ className: classNames`` })``;
+
 /* styled components ends */
 interface InputTextProps extends InputProps {
   type: "email" | "text" | "password";
@@ -180,6 +183,7 @@ interface InputTextProps extends InputProps {
   searchbar?: "true" | "false";
   placeholder?: string;
   autoComplete?: "on" | "off";
+  // $inputTest?: string; //test 목적
 }
 
 ////****************************** */
@@ -217,6 +221,7 @@ export const Input: React.FC<InputTextProps> = (props) => {
               ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
               `
             }
+            // ${props.$inputTest && `text-indigo-500`}
             {...field}
             {...props}
           />
@@ -299,14 +304,34 @@ export const Input: React.FC<InputTextProps> = (props) => {
     //TODO: 4, 5번도 색깔, 보더 등 바꿀 수 있게 하기
     case "outlined":
       return (
-        <div className="px-4 py-2 border-2 border-gray-400 rounded relative">
-          <label className="absolute -my-6 -mx-2 bg-white px-2 text-gray-400">
+        <div
+          className={classNames`px-4 py-2 relative  
+          ${props.rounded ? ROUND_VARIANT_MAPS[props.rounded] : `rounded`}
+          ${
+            props.borderwidth
+              ? BORDER_WIDTH_VARIANT_MAPS[props.borderwidth]
+              : `border-2`
+          }
+          ${props.color ? COLOR_VARIANT_MAPS[props.color] : `border-gray-200`}
+          ${props.bgcolor ? BGCOLOR_VARIANT_MAPS[props.bgcolor] : `bg-white`}
+          `}
+        >
+          <label
+            className={classNames`absolute -my-6 -mx-2 px-2 
+            ${props.color ? COLOR_VARIANT_MAPS[props.color] : `text-gray-500`}
+            ${props.bgcolor ? BGCOLOR_VARIANT_MAPS[props.bgcolor] : `bg-white`}
+            `}
+          >
             {props.label}
           </label>
           <input
             type={props.type}
-            className="appearance-none border-2 border-white rounded w-full py-2 text-gray-500 leading-tight focus:outline-none focus:bg-white focus:border-white"
-            placeholder="Max Mustermann"
+            className={classNames`w-full py-2 leading-tight appearance-none rounded
+            focus:outline-none focus:bg-white focus:border-white
+            ${props.color ? COLOR_VARIANT_MAPS[props.color] : `border-gray-200`}
+            ${props.bgcolor ? BGCOLOR_VARIANT_MAPS[props.bgcolor] : `bg-white`}
+            `}
+            placeholder={props.placeholder ? props.placeholder : ""}
           />
         </div>
       );
