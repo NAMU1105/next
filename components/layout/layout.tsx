@@ -31,7 +31,7 @@ const Layout: React.FC<LayoutProps> = (props: LayoutProps) => {
       {/* <div id="modal-hook"></div>
       <div id="drawer-hook"></div> */}
       {/* 컨텐츠 */}
-      <div className="content flex flex-col w-full">
+      <div className="content flex flex-col w-full font-inter">
         <Header />
         <div className="flex">
           <Sidebar />

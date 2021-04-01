@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactChild, ReactChildren, ReactNode } from "react";
 import { useField } from "formik";
 import styled from "styled-components";
 import tw from "twin.macro";
@@ -103,7 +103,7 @@ interface InputProps {
   label: string;
   noLabel?: boolean;
   align?: "inline-flex" | "";
-  design?: "filled" | "outlined"; //dashed, dotted..
+  // design?: "filled" | "outlined"; //dashed, dotted..
   disabled?: boolean;
   color?: "white" | "black" | "gray" | "primary" | "secondary" | "danger";
   bgcolor?: "white" | "black" | "gray" | "primary" | "secondary" | "danger";
@@ -131,6 +131,45 @@ interface InputProps {
 ///////////////////////
 
 /* styled components starts */
+// 서치바 관련 css
+const InputTextSearchBar = styled.div`
+  /* flex  items-center border border-gray-200 rounded-2xl px-4  origin-top-left transition duration-200 ease-out transform focus-within:scale-x-150  */
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px gainsboro solid;
+  border-radius: 1rem;
+  padding: 0 1rem;
+  transform-origin: top left;
+  transition: all 0.2s ease-out;
+  width: auto;
+  height: 2.2rem;
+
+  &:focus-within {
+    /* &:focus-within:not(.searchIcon) { */
+    transform: scaleX(1.3);
+
+    //TODO: 나중에 더 수정하기
+    /* .searchIcon { */
+    & > button {
+      transform: scaleX(0.85);
+    }
+
+    & > input {
+      font-size: 16px;
+    }
+
+    & > .autoComplete {
+      display: block;
+    }
+  }
+
+  /* & > button > svg:focus-within { */
+  /* .searchIcon:focus-within {
+    transform: scaleX(0.7);
+  } */
+`;
+
 type InputWrapperType = {
   borderwidth?: string;
   rounded?: string;
@@ -164,9 +203,90 @@ const InputTextWrapper = styled.div.attrs((props: InputWrapperType) => ({
   }
 `;
 
+//////////////////////////////
+// slider
+//////////////////////////////
+const SliderWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 35px;
+  text-align: center;
+
+  input {
+    pointer-events: none;
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 15px;
+    width: 100%;
+    outline: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 0; /* iOS */
+    background: gainsboro;
+    overflow: hidden;
+    cursor: pointer;
+    -webkit-appearance: none;
+    /* height: 18px; */
+    height: 10px;
+  }
+
+  input[type="range"]::-webkit-slider-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 1;
+    outline: 0;
+    //
+
+    -webkit-appearance: none;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    box-shadow: -100vw 0 0 100vw palevioletred;
+    border: 0.1px solid palevioletred;
+    cursor: pointer;
+  }
+
+  input:last-of-type::-webkit-slider-thumb {
+    box-shadow: -100vw 0 0 100vw gainsboro;
+  }
+
+  input::-moz-range-thumb {
+    pointer-events: all;
+    position: relative;
+    z-index: 10;
+    -moz-appearance: none;
+    width: 9px;
+  }
+
+  // slider 색상 나오는 곳
+  input::-moz-range-track,
+  input::-ms-track {
+    position: relative;
+    z-index: -1;
+    background-color: transparent;
+    border: 0;
+  }
+  /* input:last-of-type::-moz-range-track,
+  input:last-of-type::-ms-track {
+    -moz-appearance: none;
+    background-color: transparent;
+    border: 0;
+  } */
+  input[type="range"]::-moz-focus-outer,
+  input[type="range"]:focus {
+    border: 0;
+    outline: none;
+  }
+
+  ////
+`;
+
+// 에러 메시지 출력 div
 const ErrorDivWrapper = styled.div.attrs({ className: classNames`` })``;
 
 /* styled components ends */
+
 interface InputTextProps extends InputProps {
   type: "email" | "text" | "password";
   inputtype?:
@@ -178,12 +298,12 @@ interface InputTextProps extends InputProps {
     | "dashed"
     | "filled";
   //multiline일 경우 textarea
-  multiLine?: boolean;
+  // multiLine?: boolean;
   // search input box
-  searchbar?: "true" | "false";
+  // searchbar?: "true" | "false";
   placeholder?: string;
   autoComplete?: "on" | "off";
-  // $inputTest?: string; //test 목적
+  // $inputTest?: string; // styled-components error test 목적
 }
 
 ////****************************** */
@@ -195,40 +315,6 @@ export const Input: React.FC<InputTextProps> = (props) => {
   });
 
   switch (props.inputtype) {
-    //1. 일반 인풋일 경우
-    case "normal":
-      return (
-        // 일반 인풋일 경우
-        // <div className={`w-full`}>
-        <div
-          className={classNames`w-full ${
-            props.customstyle && props.customstyle
-          }`}
-        >
-          <input
-            className={
-              // props.disabled              ? `${DISALBED_INPUT}`              :
-              classNames`form-input border border-transparent focus:border-transparent
-              ${COLOR_VARIANT_MAPS[props.color]}
-              ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
-              ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
-              ${RING_WIDTH_VARIANT_MAPS[props.ringwidth]}
-              ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
-              ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
-              ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
-              ${ROUND_VARIANT_MAPS[props.rounded]}
-              // ${props.customstyle && props.customstyle}
-              ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
-              `
-            }
-            // ${props.$inputTest && `text-indigo-500`}
-            {...field}
-            {...props}
-          />
-          {error && touched && <div className={``}>{error}</div>}
-        </div>
-      );
-
     // 2. textArea일 경우
     case "textarea":
       return (
@@ -255,15 +341,11 @@ export const Input: React.FC<InputTextProps> = (props) => {
     // 3. 서치바일 경우
     case "searchBar":
       return (
-        <div
-          className={classNames`w-full ${
-            props.customstyle && props.customstyle
-          }`}
-        >
-          <div className="flex items-center border border-gray-200 rounded-2xl px-4">
-            <button className="focus:outline-none transform hover:scale-125">
+        <div className={classNames` ${props.customstyle && props.customstyle}`}>
+          <InputTextSearchBar>
+            <button className="searchIcon focus:outline-none transform hover:scale-110">
               <svg
-                className="w-7"
+                className="w-6 text-gray-600"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -278,9 +360,8 @@ export const Input: React.FC<InputTextProps> = (props) => {
               </svg>
             </button>
             <input
-              className={
-                // props.disabled              ? `${DISALBED_INPUT}`              :
-                classNames`form-input border border-transparent focus:border-transparent
+              className={classNames`form-input border border-transparent focus:border-transparent
+                bg-transparent
               ${COLOR_VARIANT_MAPS[props.color]}
               ${TEXT_TRANSFORM_VARIANT_MAPS[props.texttransform]}
               ${RING_COLOR_VARIANT_MAPS[props.ringcolor]}
@@ -289,15 +370,20 @@ export const Input: React.FC<InputTextProps> = (props) => {
               ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
               ${FONT_SIZE_VARIANT_MAPS[props.textsize]}
               ${ROUND_VARIANT_MAPS[props.rounded]}
-              // ${props.customstyle && props.customstyle}
               ${props.disabled && DISABLED_VARIANT_MAPS["text"]}
-              `
-              }
+            
+              `}
               {...field}
               {...props}
             />
-          </div>
-          {error && touched && <div className={``}>{error}</div>}
+            {/* 자동완성 텍스트 보여주는 div */}
+            {field.value && (
+              <div className="autoComplete hidden absolute min-w-full max-w-full top-8 mt-1 -left-0.25 shadow-2xl p-4 rounded-md bg-white z-20">
+                {field.value}
+              </div>
+            )}
+            {error && touched && <div className={``}>{error}</div>}
+          </InputTextSearchBar>
         </div>
       );
     // 4. 아웃라인 버전일 경우(애니메이션 효과 없이)
@@ -435,42 +521,101 @@ export const Checkbox: React.FC<CheckboxProps> = ({ children, ...props }) => {
 // radio
 ////****************************** */
 interface RadioProps extends InputProps {
+  radiotype?: "normal" | "block" | "blockChild";
   radiosize?: "sm" | "md" | "lg" | "xl";
   value: string;
+  children?: React.ReactNode | React.FC | ReactChildren;
 }
+
+export const RadioBlockTypeWrapper = (props) => {
+  return (
+    <div role="group" aria-labelledby="my-radio-group">
+      <ul
+        // id="filter1"
+        className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
+      >
+        {props.children}
+      </ul>
+    </div>
+  );
+};
+
 export const Radio: React.FC<RadioProps> = ({ children, ...props }) => {
   const [field, meta] = useField({
     name: props.name,
   });
 
-  return (
-    <div className={`inline-flex flex-col`}>
-      <label htmlFor={props.name} className="items-center">
-        <input
-          type="radio"
-          disabled={props.disabled}
-          className={classNames`form-radio mr-2 border border-gray-700 ring-current focus:border-current	
-          ${ROUND_VARIANT_MAPS[props.rounded]}
-          ${COLOR_VARIANT_MAPS[props.color]}
-          ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
-          ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
-          ${BOX_SIZE_VARIANT_MAPS[props.radiosize]}
-          ${props.customstyle && props.customstyle}
-          ${props.disabled && DISABLED_VARIANT_MAPS["radio"]}
-          `}
-          value={props.value}
-          // {...props.disabled&&disabled={true}}
-          {...field}
-          {...props}
-        />
-        <span className={classNames`${FONT_SIZE_VARIANT_MAPS[props.textsize]}`}>
-          {props.label}
-        </span>
-        {children}
-      </label>
-      {meta.touched && meta.error ? <div className="error"></div> : null}
-    </div>
-  );
+  switch (props.radiotype) {
+    case "blockChild":
+      return (
+        <li className="filter-switch-item flex relative h-8 ">
+          <input
+            type="radio"
+            disabled={props.disabled}
+            id={props.id}
+            value={props.value}
+            className="sr-only"
+            {...field}
+            {...props}
+          />
+          <label
+            htmlFor={props.id}
+            className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
+          >
+            {props.label}
+          </label>
+        </li>
+      );
+
+    // block 디자인 타입일 경우
+    // children을 받아서 넘기기
+    // case "block":
+    //   return (
+    //     <div role="group" aria-labelledby="my-radio-group">
+    //       <ul
+    //         id="filter1"
+    //         className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
+    //       >
+    //         {children}
+    //       </ul>
+    //     </div>
+    //   );
+
+    // 디폴트는 일반 라디오
+    default:
+      return (
+        <div className={`inline-flex flex-col`}>
+          <label htmlFor={props.name} className="items-center">
+            <input
+              type="radio"
+              disabled={props.disabled}
+              className={classNames`form-radio mr-2 border border-gray-700 ring-current focus:border-current	
+              ${ROUND_VARIANT_MAPS[props.rounded]}
+              ${COLOR_VARIANT_MAPS[props.color]}
+              ${FIELD_SIZE_VARIANT_MAPS[props.fieldsize]}
+              ${BGCOLOR_VARIANT_MAPS[props.bgcolor]}
+              ${BOX_SIZE_VARIANT_MAPS[props.radiosize]}
+              ${props.customstyle && props.customstyle}
+              ${props.disabled && DISABLED_VARIANT_MAPS["radio"]}
+              `}
+              value={props.value}
+              // {...props.disabled&&disabled={true}}
+              {...field}
+              {...props}
+            />
+            <span
+              className={classNames`${FONT_SIZE_VARIANT_MAPS[props.textsize]}`}
+            >
+              {props.label}
+            </span>
+            {children}
+          </label>
+          {meta.touched && meta.error ? (
+            <ErrorDivWrapper>{meta.error}</ErrorDivWrapper>
+          ) : null}
+        </div>
+      );
+  }
 };
 
 ////****************************** */
@@ -508,4 +653,91 @@ export const Select: React.FC<SelectProps> = ({ children, ...props }) => {
       {/* {meta.touched && meta.error ? <div className="error"></div> : null} */}
     </>
   );
+};
+
+////****************************** */
+// slider
+////****************************** */
+interface SliderProps extends InputProps {
+  slidertype?: "normal" | "twoPointsChild";
+  step?: number;
+  min: number;
+  max: number;
+  values?: any;
+}
+
+export const SliderTwoWayTypeWrapper = (props) => {
+  return (
+    <div className="bg-white rounded-sm capitalize">
+      <label className="font-bold">{props.label}</label>
+      <SliderWrapper>{props.children}</SliderWrapper>
+      {/* <Slider /> */}
+      <span>{/* ${intFirstSliderValue}-${intSecondSliderValue} */}</span>
+    </div>
+  );
+};
+
+export const Slider: React.FC<SliderProps> = ({ children, ...props }) => {
+  const [field, meta] = useField({
+    name: props.name,
+  });
+
+  // console.log(field.value);
+  // console.log(field.name);
+  // console.log(field);
+  // if(field.name==="slider1"&&)
+  // console.log("values: ", props.values);
+
+  if (props.values.slider1 > props.values.slider2) {
+    // if (field.name === "slider1") {
+    //   console.log("slider1 moving");
+    // } else {
+    //   console.log("slider2 moving");
+    // }
+    // field.value.slider1 = field.value.slider2;
+  }
+  switch (props.slidertype) {
+    case "twoPointsChild":
+      return (
+        <input
+          min={props.min}
+          max={props.max}
+          step={props.step | 0.5}
+          type="range"
+          name={props.name}
+          id={props.name}
+          {...field}
+          {...props}
+          // value={props.value}
+          // onChange={props.onchange}
+        />
+      );
+
+    default:
+      return (
+        <>
+          <div className="bg-white rounded-sm capitalize">
+            <label className="font-bold" htmlFor={props.name}>
+              {props.label}
+            </label>
+            <SliderWrapper>
+              <input
+                min={props.min}
+                max={props.max}
+                step={props.step | 0.5}
+                type="range"
+                name={props.name}
+                {...field}
+                {...props}
+                // value={props.value}
+                // onChange={props.onchange}
+              />
+            </SliderWrapper>
+            {/* <Slider /> */}
+            <span>{/* ${intFirstSliderValue}-${intSecondSliderValue} */}</span>
+          </div>
+          {/* {meta.touched && meta.error ? <div className="error"></div> : null} */}
+        </>
+      );
+  }
 };

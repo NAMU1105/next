@@ -83,6 +83,11 @@ module.exports = {
       },
 
       keyframes: {
+        slideToRight: {
+          "0%": { transform: "scaleX(0)" },
+          "100%": { transform: "scaleX(1)" },
+        },
+
         wiggle: {
           "0%, 100%": { transform: "rotate(-6deg)" },
           "50%": { transform: "rotate(6deg)" },
@@ -146,6 +151,7 @@ module.exports = {
       },
 
       animation: {
+        slideToRight: "slideToRight ease-in 0.2s",
         wiggle: "wiggle 0.5s ease-in-out infinite",
         bounceHorizontal: "bounceHorizontal 1s ease-in infinite",
         chase: "chase 2s linear infinite",
@@ -164,6 +170,7 @@ module.exports = {
         footer: "6rem",
         content: "calc(100vh - 12rem)",
         sidenav: "17rem",
+        logoHeight: "20px",
         "1/10": "10%",
         "1/5": "20%",
         18: "4.5rem",
@@ -188,7 +195,10 @@ module.exports = {
         20: "5rem",
         32: "8rem",
         40: "10rem",
+        60: "15rem",
+        80: "20rem",
         "1/10": "10%",
+        "1/5": "20%",
         "1/4": "25%",
         "1/2": "50%",
         "3/4": "75%",
@@ -197,6 +207,8 @@ module.exports = {
       },
       maxWidth: {
         main: "calc(100vw-250px)",
+        80: "20rem",
+        "1/5": "20%",
       },
       height: {
         fit: "fit-content",
@@ -205,6 +217,7 @@ module.exports = {
       width: {
         sidenav: "17rem",
         main: "calc(100vw-17rem)",
+        searchIcon: "30px",
       },
 
       // inset: (theme, { negative }) => ({
@@ -220,6 +233,7 @@ module.exports = {
         "disabled",
         "important",
         "label-checked",
+        "focus",
       ],
       borderColor: ["checked"],
       fill: ["hover", "focus"],
@@ -232,7 +246,14 @@ module.exports = {
       ],
       outline: ["hover", "active", "focus"],
       margin: ["first", "focus", "group-focus", "focus-within"],
-      scale: ["active", "group-hover", "group-focus", "hover"],
+      scale: [
+        "active",
+        "group-hover",
+        "group-focus",
+        "hover",
+        "focus-within",
+        "focus",
+      ],
       borderRadius: ["checked", "label-checked"],
       boxShadow: ["checked", "label-checked"],
       display: ["group-focus", "group-hover"],

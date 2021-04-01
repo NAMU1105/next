@@ -1,12 +1,20 @@
-import React from "react";
-import styled from "styled-components";
-import tw from "twin.macro";
-import { classNames } from "../../utils/utils";
+import React, { useState, useEffect } from "react";
+// import styled from "styled-components";
+// import tw from "twin.macro";
+// import { classNames } from "../../utils/utils";
 
 import { Avatar, AvatarGroup } from "../../components/UI/avatar";
 import { Alert } from "../../components/UI/alert";
 import Button from "../../components/form/button";
-import { Checkbox, Input, Select, Radio } from "../../components/form/input";
+import {
+  Checkbox,
+  Input,
+  Select,
+  Radio,
+  RadioBlockTypeWrapper,
+  Slider,
+  SliderTwoWayTypeWrapper,
+} from "../../components/form/input";
 import { Formik, Field, Form, FormikHelpers } from "formik";
 import { TestSchema } from "../../utils/validator";
 import { Modal } from "../../components/UI/modal";
@@ -145,6 +153,38 @@ const data2 = {
 //****************************************/
 ///////////////////////////////////////////
 const Index = (props) => {
+  const [firstSliderValue, setFirstSliderValue] = useState<number>(5);
+  const [secondSliderValue, setSecondSliderValue] = useState<number>(10);
+
+  // 가격 슬라이더 중 최소가격 포인터 관련 함수
+  const changeFirstSliderValue = (event) => {
+    const eventValue = Number(event.target.value);
+    console.log("firstSliderValue: ", eventValue);
+
+    setFirstSliderValue(eventValue);
+  };
+  // 가격 슬라이더 중 최고가격 포인터 관련 함수
+  const changeSecondSliderValue = (event) => {
+    const eventValue = Number(event.target.value);
+    console.log("changeSecondSliderValue: ", eventValue);
+    // console.log(typeof intSecondSliderValue);
+
+    setSecondSliderValue(eventValue);
+    // console.log(eventValue);
+  };
+
+  useEffect(() => {
+    if (firstSliderValue >= secondSliderValue) {
+      setFirstSliderValue((prev) => prev - 0.5);
+    }
+  }, [firstSliderValue]);
+
+  useEffect(() => {
+    if (secondSliderValue <= firstSliderValue) {
+      setSecondSliderValue((prev) => prev + 0.5);
+    }
+  }, [secondSliderValue]);
+
   const testFunction = () => {
     console.log("test");
     // alert("button");
@@ -296,9 +336,11 @@ const Index = (props) => {
               email: "",
               picked: "",
               picked2: "",
-              picked3: "",
+              blockChild: "",
+              slider1: 0,
+              slider2: 8,
             }}
-            validationSchema={TestSchema}
+            // validationSchema={TestSchema}
             onSubmit={(
               values: Values,
               { setSubmitting }: FormikHelpers<Values>
@@ -311,7 +353,7 @@ const Index = (props) => {
               }, 500);
             }}
           >
-            {({ errors, touched }) => (
+            {({ errors, touched, setFieldValue, values }) => (
               <Form>
                 {/* <Input
                   name="email"
@@ -466,100 +508,118 @@ const Index = (props) => {
 
                 {/* radio */}
                 <div className="flex flex-col">
-                  <div role="group" aria-labelledby="my-radio-group">
-                    <span>radio name</span>
+                  {/* <div role="group" aria-labelledby="my-radio-group"> */}
+                  <Radio label="default radio" name="picked" value="default" />
+                  <Radio
+                    label="primary radio"
+                    name="picked"
+                    color="primary"
+                    ringcolor="danger"
+                    radiosize="xl"
+                    ringwidth="lg"
+                    value="primary"
+                  />
+                  <Radio
+                    label="secondary radio"
+                    name="picked"
+                    color="secondary"
+                    value="secondary"
+                  />
+                  <Radio
+                    label="danger radio"
+                    name="picked"
+                    color="danger"
+                    radiosize="md"
+                    value="danger"
+                  />
+                  <Radio
+                    label="default radio lg"
+                    name="picked2"
+                    radiosize="lg"
+                    value="large"
+                  />
+                  <Radio
+                    label="default radio"
+                    name="picked2"
+                    textsize="xl"
+                    value="xl"
+                  />
+                  {/* </div> */}
+                  {/* block type radio */}
+                  {/* <Radio
+                      radiotype="block"
+                      name="block"
+                      label="block"
+                      value="block"
+                    /> */}
+                  <RadioBlockTypeWrapper>
                     <Radio
-                      label="default radio"
-                      name="picked"
-                      value="default"
+                      radiotype="blockChild"
+                      name="blockChild"
+                      label="blockChild"
+                      value="blockChild1"
+                      id="blockChild1"
                     />
                     <Radio
-                      label="primary radio"
-                      name="picked"
-                      color="primary"
-                      ringcolor="danger"
-                      radiosize="xl"
-                      ringwidth="lg"
-                      value="primary"
+                      radiotype="blockChild"
+                      name="blockChild"
+                      label="blockChild2"
+                      value="blockChild2"
+                      id="blockChild2"
                     />
                     <Radio
-                      label="secondary radio"
-                      name="picked"
-                      color="secondary"
-                      value="secondary"
+                      radiotype="blockChild"
+                      name="blockChild"
+                      label="blockChild3"
+                      value="blockChild3"
+                      id="blockChild3"
                     />
                     <Radio
-                      label="danger radio"
-                      name="picked"
-                      color="danger"
-                      radiosize="md"
-                      value="danger"
+                      radiotype="blockChild"
+                      name="blockChild"
+                      label="blockChild4"
+                      value="blockChild4"
+                      id="blockChild4"
                     />
-                    <Radio
-                      label="default radio lg"
-                      name="picked2"
-                      radiosize="lg"
-                      value="large"
-                    />
-                    <Radio
-                      label="default radio"
-                      name="picked2"
-                      textsize="xl"
-                      value="xl"
-                    />
-                  </div>
-                  <div role="group" aria-labelledby="my-radio-group">
-                    <ul
-                      id="filter1"
-                      className="filter-switch inline-flex items-center relative h-10 p-1 space-x-1 bg-gray-200 rounded-md font-semibold text-blue-600 my-4"
-                    >
-                      <li className="filter-switch-item flex relative h-8 ">
-                        <input
-                          type="radio"
-                          name="picked3"
-                          id="filter2"
-                          className="sr-only"
-                        />
-                        <label
-                          htmlFor="filter2"
-                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
-                        >
-                          Complete
-                        </label>
-                      </li>
-
-                      <li className="filter-switch-item flex relative h-8 ">
-                        <input
-                          type="radio"
-                          name="picked3"
-                          id="filter3"
-                          className="sr-only"
-                        />
-                        <label
-                          htmlFor="filter3"
-                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
-                        >
-                          checked
-                        </label>
-                      </li>
-
-                      <li className="filter-switch-item flex relative h-8 ">
-                        <input
-                          type="radio"
-                          name="picked3"
-                          id="filter34"
-                          className="sr-only"
-                        />
-                        <label
-                          htmlFor="filter34"
-                          className="cursor-pointer h-8 py-1 px-2 text-sm leading-6 text-gray-600 hover:text-gray-800 shadow-none bg-opacity-0 label-checked:text-inherit label-checked:bg-white label-checked:shadow label-checked:rounded"
-                        >
-                          checked
-                        </label>
-                      </li>
-                    </ul>
-                  </div>
+                  </RadioBlockTypeWrapper>
                 </div>
+
+                {/* slider*/}
+                <SliderTwoWayTypeWrapper label="two points">
+                  <Slider
+                    slidertype="twoPointsChild"
+                    name="slider2"
+                    label="one"
+                    min={0}
+                    max={10}
+                    step={0.5}
+                    values={values}
+                    // value={initialv }
+                    // value={firstSliderValue}
+                    // onchange={changeFirstSliderValue}
+                    // onchange={(event, value) => setFieldValue("slider1", value)}
+                  />
+                  <Slider
+                    slidertype="twoPointsChild"
+                    name="slider1"
+                    label="twdo"
+                    min={0}
+                    max={10}
+                    step={0.5}
+                    values={values}
+                    // onchange={(event, value) => setFieldValue("slider2", value)}
+
+                    // value={secondSliderValue}
+                    // onchange={changeSecondSliderValue}
+                  />
+                </SliderTwoWayTypeWrapper>
+                {/* <Slider
+                  slidertype="normal"
+                  name="one"
+                  label="one"
+                  min={0}
+                  max={10}
+                /> */}
 
                 {/* btn */}
                 <Button

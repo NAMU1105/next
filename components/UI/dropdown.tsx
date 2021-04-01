@@ -25,9 +25,11 @@ const DropdownMenuWrapper = styled.div.attrs((props: DropDownType) => ({
     `};
 `;
 
+// TODO: 라벨은 컴포넌트로 받기
+// 언어 설정 등의 메뉴는 아이콘도 들어가야 하므로
 type MenuType = {
   to?: string;
-  label?: string;
+  label: string;
   className?: string;
   onClick?: () => void;
 };

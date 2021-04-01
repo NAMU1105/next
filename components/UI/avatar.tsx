@@ -52,7 +52,7 @@ export const Avatar: React.FC<AvatarProps> = (props: AvatarProps) => {
     elem = (
       <>
         <span
-          className={classNames`absolute w-4 h-4 rounded-full -top-1 -right-1 ${
+          className={classNames`absolute w-3 h-3 rounded-full -top-1 -right-1 ${
             BADGE_VARIANT_MAPS[props.badge]
           }
           ${props.customstyle}`}

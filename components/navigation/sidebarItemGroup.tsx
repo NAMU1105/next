@@ -10,7 +10,7 @@ const SidebarItem = (props) => {
     >
       <div className="flex items-center mb-2">
         <svg
-          className="w-6"
+          className="w-6 text-gray-600"
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
@@ -23,14 +23,24 @@ const SidebarItem = (props) => {
             d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
           />
         </svg>
-        {props.open && <span className="capitalize ml-2">menu</span>}
+        {props.open && (
+          <span className="uppercase ml-2 text-gray-900">menu</span>
+        )}
       </div>
     </li>
   );
 };
 
+type SidebarItem = {
+  to?: string;
+  icon?: string;
+  label: string;
+  onclick?: () => void;
+};
+
 interface SidebarItemGroupProps {
   // navcolor: SidebarProp;
+  items: Array<SidebarItem>;
 }
 
 // up/down
@@ -52,7 +62,9 @@ const SidebarItemGroup: React.FC<SidebarItemGroupProps> = (
       <div className="h-8 flex items-center justify-between">
         {layoutContext.isNavOpen && (
           <>
-            <h3 className="font-bold capitalize">Item group name</h3>
+            <h3 className="font-bold uppercase text-gray-900">
+              Item group name
+            </h3>
             <button onClick={toggleMenuHandler}>
               <svg
                 className="w-5"
