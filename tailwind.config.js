@@ -3,9 +3,6 @@ const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   purge: ["./components/**/*.{js,jsx,ts,tsx}", "./pages/**/*.{js,jsx,ts,tsx}"],
-  // purge: ['./pages/**/*.js', './components/**/*.js'],
-  // purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
-  darkMode: false, // or 'media' or 'class'
   theme: {
     extend: {
       // customForms: theme => ({
