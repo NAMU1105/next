@@ -8,6 +8,11 @@ import { Avatar } from "../UI/avatar";
 import DropDown from "../UI/dropdown";
 import Logo from "../UI/logo";
 
+import styled from "styled-components";
+const STYLEDSSRTEST = styled.div`
+  color: red;
+`;
+
 type Values = {
   searchBar: string;
 };
@@ -183,6 +188,7 @@ const Header: React.FC<IF> = (props: IF) => {
 
   return (
     <header className={classNames`flex-col md:flex`}>
+      <STYLEDSSRTEST>STYLED COMPONENT SSR TEST</STYLEDSSRTEST>
       <div
         className={classNames`w-full fixed z-10 pr-4 top-0 h-header flex items-center ${
           BGCOLOR_VARIANT_MAPS[layoutContext.layoutColor].bg

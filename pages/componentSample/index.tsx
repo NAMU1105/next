@@ -5,7 +5,9 @@ import React, { useState, useEffect } from "react";
 
 import { Avatar, AvatarGroup } from "../../components/UI/avatar";
 import { Alert } from "../../components/UI/alert";
-import Button from "../../components/form/button";
+// import Button from "../../components/form/button";
+import Button from "@/components/form/button";
+
 import {
   Checkbox,
   Input,

@@ -1,4 +1,6 @@
 import { useState } from "react";
+import dynamic from "next/dynamic";
+
 import { Formik, Form, ErrorMessage } from "formik";
 import { gql, useMutation } from "@apollo/client";
 // import { getSession } from "next-auth/client";
@@ -6,7 +8,9 @@ import { gql, useMutation } from "@apollo/client";
 import { SignupSchema, LoginSchema } from "../utils/validator";
 
 import { Input } from "../components/form/input";
-import Button from "../components/form/button";
+// import Button from "../components/form/button";
+// import Button from "@/components/form/button";
+const Button = dynamic(() => import("@/components/form/button"));
 
 interface IF {}
 
